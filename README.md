@@ -21,4 +21,8 @@ It starts in file:
 * e - contains sub exits to some other worlds
   * only github links are supported
   * numbers allows to sub naviagte for ex.: 0-1
-   
+
+
+# Concepts
+ * Most of the worlds should allow some access on all 4 dimensions (1, 2 , 3, AR)
+ * List of worlds is maintained by the ownerof each node 0/1/2
