@@ -23,9 +23,12 @@ It starts in file:
   * numbers allows to sub naviagte for ex.: 0-1
 
 # Concepts
+There are some concpets that describe generall use cases, but they can be questioned in more sophistacted scenarion so full potential of a plotfarm will be utilized. For ex.: 3d aaa game will not be availble on a text terminal. but chat or some kind of presence could.
+ * Worlds should be opensourced in most basic scenarios
  * Most of the worlds should allow some access on all 4 dimensions (1, 2 , 3, AR)
  * List of worlds is maintained by the ownerof each node 0/1/2
  * 1d worlds could be accessed also by GUI, so they could there is an option for having some boring business layer. For ex.: e-commerce, chat.
  * 1d could be accessible from 2d
  * 2d could be accesible from 3d
  * 3d could be accesible from AR - TBD
+ * IDE for the MV should be availble in 1d
