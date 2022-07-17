@@ -1,0 +1,16 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    
+    <PackageId>MV</PackageId>
+    <Version>1.0.1</Version>
+    <Authors>Paweł Gałęzowski</Authors>
+    <Company>lopla</Company>
+    <Description>Base packge for creating metaverses.</Description>
+ 
+  </PropertyGroup>
+
+</Project>
