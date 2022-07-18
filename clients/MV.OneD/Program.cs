@@ -1,2 +1,6 @@
-﻿// See https://aka.ms/new-console-template for more information
+﻿using MV.OneD;
+
 Console.WriteLine("Hello, World!");
+
+var mvClient = new  Client();
+mvClient.Start();
