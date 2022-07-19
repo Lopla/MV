@@ -9,5 +9,10 @@ namespace MV.Models
         public string Text {get;set;} = String.Empty;
 
         public Dictionary<string,string> Translations = new Dictionary<string, string>();
+
+        public I18NString(string text = "")
+        {
+            this.Text = text;
+        }
     }
 }

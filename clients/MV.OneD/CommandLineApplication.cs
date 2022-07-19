@@ -1,4 +1,6 @@
 using System.CommandLine;
+using System.CommandLine.Invocation;
+using MV.OneD.UI;
 
 internal class CommandLineApplication
 {
@@ -8,24 +10,17 @@ internal class CommandLineApplication
 
     public async Task<int> Main(params string[] args)
     {
-        var fileOption = new Option<FileInfo?>(
-            name: "--file",
-            description: "The file to read and display on the console.");
-
-        var rootCommand = new RootCommand("Sample app for System.CommandLine");
-        rootCommand.AddOption(fileOption);
-
-        rootCommand.SetHandler((file) => 
-            { 
-                ReadFile(file!); 
-            },
-            fileOption);
+        var rootCommand = new RootCommand("Start metaverse browser with Terminal GUI.");
+        
+        rootCommand.SetHandler(this.OpenBrowser);
 
         return await rootCommand.InvokeAsync(args);
     }
 
-    private void ReadFile(object value)
-    {
-        throw new NotImplementedException();
+    private void OpenBrowser(InvocationContext obj)
+    {      
+        var app = new App();
+
+        app.Start();
     }
 }

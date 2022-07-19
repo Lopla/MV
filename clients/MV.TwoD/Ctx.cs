@@ -22,7 +22,6 @@ namespace MV.TwoD
             {
                 Bounds = new SKRect(10, 10, 30, 30),
                 Label = "1",
-                HotKey = '1',
             };
             
             b.ClickedHandler += (loc) =>
