@@ -1,3 +1,5 @@
+using Home;
+
 namespace MV.TwoD
 {
     /// <summary>
@@ -5,8 +7,11 @@ namespace MV.TwoD
     /// </summary>
     public class Logic
     {
+        private HomeManifest mv;
+
         public Logic()
         {
+            this.mv = new Home.HomeManifest();
             //1 load verse
             //2 show gui
             //3 interact
@@ -23,6 +28,6 @@ namespace MV.TwoD
             //events loop
         }
 
-        
+
     }
 }

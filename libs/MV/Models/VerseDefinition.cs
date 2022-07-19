@@ -7,5 +7,7 @@ namespace MV.Models
         /// </summary>
         /// <value></value>
         public List<VerseReference> E { get; set; } = new List<VerseReference>();
+
+        public I18NString Name{get;set;} = new I18NString();
     }
 }

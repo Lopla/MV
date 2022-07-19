@@ -20,9 +20,9 @@ public class Client
         this.plugin = new Home.HomeManifest();
     }
 
-    public List<VersReference> Exits()
+    public List<VerseReference> Exits()
     {
-        List<VersReference> result = new List<VersReference>();
+        List<VerseReference> result = new List<VerseReference>();
 
         return result;
     }

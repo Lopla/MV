@@ -16,21 +16,25 @@ namespace MV.TwoD
         {
             this.e = engine;
             this.manager = new Manager(engine);
-
             this.logic = new Logic();
 
             var b = new Button()
             {
-                Bounds = new SKRect(10, 100, 100, 130),
-                Label = "Click me",
+                Bounds = new SKRect(10, 10, 30, 30),
+                Label = "1",
+                HotKey = '1',
             };
+            
             b.ClickedHandler += (loc) =>
             {
                 System.Console.WriteLine("a");
                 this.e.RequestRefresh();
             };
 
+            var number = new Edit();
+
             this.manager.Add(b);
+            this.e.RequestTransparentWindow();
         }
 
         public IPainter GetPainter()

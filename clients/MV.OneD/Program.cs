@@ -1,6 +1,16 @@
 ﻿using MV.OneD;
+using Terminal.Gui;
 
-Console.WriteLine("Hello, World!");
+var navigationMenu = new NavigcationMenu();
 
-var mvClient = new  Client();
-mvClient.Start();
+Application.Init ();
+var label = new Label ("Hello World") {
+            X = Pos.Center (),
+            Y = Pos.Center (),
+            Height = 1,
+        };
+Application.Top.Add (label);
+Application.Run ();
+Application.Shutdown ();
+
+var commandLineApplication = new CommandLineApplication();
