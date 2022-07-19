@@ -8,7 +8,7 @@ namespace MV.Models
         /// <value></value>
         public string T {get;set;} = String.Empty;
 
-        public Dictionary<string,string> Translations = new Dictionary<string, string>();
+        public Dictionary<string,string> Translations {get;set;}= new Dictionary<string, string>();
 
         public I18NString(string text = "")
         {

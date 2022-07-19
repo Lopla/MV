@@ -14,7 +14,14 @@ namespace MV.OneD.UI
 
         public void Setup(View root)
         {
-            
+            var label = new Label()
+            {
+                Text = Client.Def.Name.T,
+                X = Pos.Center(),
+                Y = Pos.Center(),
+            };
+
+            root.Add(label);
         }
     }
 }
