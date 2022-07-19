@@ -1,4 +1,5 @@
 using MV.Models;
+using System.Net.Http.Json;
 
 namespace MV.Client;
 
@@ -6,18 +7,24 @@ public class MVClient
 {
     public VerseDefinition Def { get; protected set;}
 
-    public MVClient(VerseDefinition def = null)
+    public MVClient()
     {
-        Def = def;
     }
 
-    public void Init()
+    public void Init(VerseReference reference)
     {
-        if(this.Def==null)
+        "https://raw.githubusercontent.com/Lopla/MV/main/0.json";
+        LoadDefinition(reference.Url);
+    }
+
+    public async Task<VerseDefinition> LoadDefinition(string url)
+    {
+        using HttpClient client = new()
         {
-            // let's fall back to defult
-            this.setupDefaults();
-        }
+            BaseAddress = new Uri(url)
+        };
+
+        return await client.GetFromJsonAsync<VerseDefinition>("mv.json");
     }
 
     private void setupDefaults()
