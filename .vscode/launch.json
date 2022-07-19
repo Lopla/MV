@@ -26,7 +26,7 @@
             "preLaunchTask": "build-oned",
             // If you have changed target frameworks, make sure to update the program path.
             "program": "${workspaceFolder}/clients/MV.OneD/bin/Debug/net6.0/MV.OneD.dll",
-            "args": [],
+            "args": ["open"],
             "cwd": "${workspaceFolder}/clients/MV.OneD",
             // For more information about the 'console' field, see https://aka.ms/VSCode-CS-LaunchJson-Console
             "console": "externalTerminal",

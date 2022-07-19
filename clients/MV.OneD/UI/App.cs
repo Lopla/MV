@@ -5,7 +5,7 @@ namespace MV.OneD.UI;
 
 public class App
 {
-    public async Task Start()
+    public async Task Start(int? address)
     {
         Application.Init ();
 

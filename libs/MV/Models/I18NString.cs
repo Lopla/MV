@@ -6,13 +6,13 @@ namespace MV.Models
         /// Keep in mind that this is a fallback text, you should use the translated property. 
         /// </summary>
         /// <value></value>
-        public string Text {get;set;} = String.Empty;
+        public string T {get;set;} = String.Empty;
 
         public Dictionary<string,string> Translations = new Dictionary<string, string>();
 
         public I18NString(string text = "")
         {
-            this.Text = text;
+            this.T = text;
         }
     }
 }

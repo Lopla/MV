@@ -1,2 +1,8 @@
-﻿var commandLineApplication = new CommandLineApplication();
-return await commandLineApplication.Main(args);
+﻿await CommandLineApplication.Main(args);
+
+return 0;
+
+// var mvclcient=new MV.Client.MVClient();
+// await mvclcient.Init();
+
+// Console.WriteLine("pff");

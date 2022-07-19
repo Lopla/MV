@@ -1,4 +1,5 @@
 using MV.Models;
+using System.Net.Http.Headers;
 using System.Net.Http.Json;
 
 namespace MV.Client;
@@ -14,7 +15,7 @@ public class MVClient
             reference = new VerseReference()
             {
                 N="0",
-                GH="llaagg/mv-home",
+                GH="llaagg/mv-home/main/",
                 Name = new I18NString("Home world")
             };
         }
@@ -25,20 +26,16 @@ public class MVClient
     public async Task<VerseDefinition> LoadDefinition(string repo)
     {
         var u = new UriBuilder("https://raw.githubusercontent.com");
-        u.Path+=repo;
-                
-        using HttpClient client = new()
-        {
-            BaseAddress = u.Uri
-        };
+        u.Path+=repo.TrimEnd('/');
+        u.Path+="/verse.json";
 
-        return await client.GetFromJsonAsync<VerseDefinition>("verse.json");
-    }
+        using HttpClient client = new();
+        client.DefaultRequestHeaders.Accept.Clear();
+        client.DefaultRequestHeaders.Add("User-Agent", "Revuo home DownloadArtefact");
 
-    private void setupDefaults()
-    {
-        this.Def = new VerseDefinition();
-        this.Def.Name = new I18NString("Meta verse");
+        //TODO: fix a bug in system console
+        //remove Result
+        return client.GetFromJsonAsync<VerseDefinition>(u.ToString()).Result;
 
     }
 
@@ -49,7 +46,6 @@ public class MVClient
     public List<VerseReference> Exits()
     {
         List<VerseReference> result = new List<VerseReference>();
-
         return result;
     }
 }
