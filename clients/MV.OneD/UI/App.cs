@@ -5,12 +5,12 @@ namespace MV.OneD.UI;
 
 public class App
 {
-    public void Start()
+    public async Task Start()
     {
         Application.Init ();
 
         var metaVerseClient = new MVClient();
-        metaVerseClient.Init();
+        await metaVerseClient.Init();
 
         var nav = new NavigcationMenu(metaVerseClient);
         nav.Setup(Application.Top);

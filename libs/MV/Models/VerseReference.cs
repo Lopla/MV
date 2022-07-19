@@ -9,10 +9,9 @@ namespace MV.Models
         public string N {get;set;} = String.Empty;
         
         /// <summary>
-        /// Where the verse file is found.
+        /// Where the verse file is found. This should be a public GH repo url
         /// </summary>
-        /// <value>valid url to github repo. For ex.: https://github.com/lopla/mv </value>
-        public string Url {get;set;}= String.Empty;
+        public string GH {get;set;}= String.Empty;
 
         /// <summary>
         /// Human readable title of the referenced verse

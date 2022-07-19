@@ -7,24 +7,32 @@ public class MVClient
 {
     public VerseDefinition Def { get; protected set;}
 
-    public MVClient()
+    public async Task Init(VerseReference reference = null)
     {
+        if(reference == null)
+        {
+            reference = new VerseReference()
+            {
+                N="0",
+                GH="llaagg/mv-home",
+                Name = new I18NString("Home world")
+            };
+        }
+
+        this.Def = await LoadDefinition(reference.GH);
     }
 
-    public void Init(VerseReference reference)
+    public async Task<VerseDefinition> LoadDefinition(string repo)
     {
-        "https://raw.githubusercontent.com/Lopla/MV/main/0.json";
-        LoadDefinition(reference.Url);
-    }
-
-    public async Task<VerseDefinition> LoadDefinition(string url)
-    {
+        var u = new UriBuilder("https://raw.githubusercontent.com");
+        u.Path+=repo;
+                
         using HttpClient client = new()
         {
-            BaseAddress = new Uri(url)
+            BaseAddress = u.Uri
         };
 
-        return await client.GetFromJsonAsync<VerseDefinition>("mv.json");
+        return await client.GetFromJsonAsync<VerseDefinition>("verse.json");
     }
 
     private void setupDefaults()

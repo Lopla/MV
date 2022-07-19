@@ -15,10 +15,10 @@ public class CommandLineApplication
         return await rootCommand.InvokeAsync(args);
     }
 
-    private void OpenBrowser(InvocationContext obj)
+    private async Task OpenBrowser(InvocationContext obj)
     {      
         var app = new App();
 
-        app.Start();
+        await app.Start();
     }
 }
