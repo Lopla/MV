@@ -8,7 +8,7 @@ public class MVClient
 {
     public VerseDefinition Def { get; protected set;}
 
-    public async Task Init(VerseReference reference = null)
+    public Task Init(VerseReference reference = null)
     {
         if(reference == null)
         {
@@ -20,10 +20,18 @@ public class MVClient
             };
         }
 
-        this.Def = await LoadDefinition(reference.GH);
+        this.Def = DownloadDefinition(reference.GH).Result;
+
+        return Task.CompletedTask;    }
+
+    public Task Init(VerseDefinition definition)
+    {
+        this.Def = definition;
+
+        return Task.CompletedTask;
     }
 
-    public async Task<VerseDefinition> LoadDefinition(string repo)
+    public async Task<VerseDefinition> DownloadDefinition(string repo)
     {
         var u = new UriBuilder("https://raw.githubusercontent.com");
         u.Path+=repo.TrimEnd('/');
@@ -36,16 +44,6 @@ public class MVClient
         //TODO: fix a bug in system console
         //remove Result
         var url = u.ToString();
-        return client.GetFromJsonAsync<VerseDefinition>(url).Result;
-    }
-
-    /// <summary>
-    /// list of other verses where you can go to
-    /// </summary>
-    /// <returns></returns>
-    public List<VerseReference> Exits()
-    {
-        List<VerseReference> result = new List<VerseReference>();
-        return result;
+        return await client.GetFromJsonAsync<VerseDefinition>(url);
     }
 }
