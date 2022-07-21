@@ -1,6 +1,10 @@
+using MV.Models;
+
 namespace MV.Interfaces;
 
 public interface IManifest
 {
-    string GetName();
+    VerseDefinition Definition();
+
+    IVerse Verse();
 }

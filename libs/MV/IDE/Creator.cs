@@ -18,7 +18,7 @@ public class Creator
                 new VerseReference()
                 {
                     GH="user/repo/branch",
-                    N="1",
+                    N='1',
                     Name=new I18NString("Hello world")
                     {
                         Translations=new Dictionary<string, string>()

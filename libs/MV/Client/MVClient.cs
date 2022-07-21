@@ -14,7 +14,7 @@ public class MVClient
         {
             reference = new VerseReference()
             {
-                N="0",
+                N='0',
                 GH="llaagg/mv-home/main/",
                 Name = new I18NString("Home world")
             };
@@ -35,8 +35,8 @@ public class MVClient
 
         //TODO: fix a bug in system console
         //remove Result
-        return client.GetFromJsonAsync<VerseDefinition>(u.ToString()).Result;
-
+        var url = u.ToString();
+        return client.GetFromJsonAsync<VerseDefinition>(url).Result;
     }
 
     /// <summary>

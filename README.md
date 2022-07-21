@@ -15,13 +15,6 @@
 ## World
 World is named by a number. 
 
-It starts in file:
-0.json
-
-* e - contains sub exits to some other worlds
-  * only github links are supported
-  * numbers allows to sub navigate for ex.: 0-1
-
 # Concepts
 There are some concepts that describe general use cases, but they can be questioned in more sophisticated scenario so full potential of a platform will be utilized. For ex.: 3d AAA game will not be available on a text terminal. but chat or some kind of presence could.
  * Worlds should be open sourced in most basic scenarios

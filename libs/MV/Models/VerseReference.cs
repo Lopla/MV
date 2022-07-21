@@ -6,7 +6,7 @@ namespace MV.Models
         /// Reference number to be used in navigation
         /// </summary>
         /// <value></value>
-        public string N {get;set;} = String.Empty;
+        public char N {get;set;} = '\0';
         
         /// <summary>
         /// Where the verse file is found. This should be a public GH repo url

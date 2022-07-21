@@ -7,7 +7,13 @@ public static class CommandLineApplication
 {
     public static async Task<int> MainCode(params string[] args)
     {
-        var optionAddress = new Option<int>(
+        var ideCommand = new Command("ide", "Start metaverse browser with Terminal GUI and debug capabilities.");
+        ideCommand.SetHandler( async()=>{
+            var app = new App();            
+            await app.Start(address);    
+        });
+
+       var optionAddress = new Option<int>(
             name: "--address",
             description: "Where to go after loading this app",
             getDefaultValue: () => 0
@@ -32,10 +38,10 @@ public static class CommandLineApplication
             await app.Start(address);            
         }, optionAddress);
 
-
-        var rootCommand = new RootCommand("Sample app for System.CommandLine");
+        var rootCommand = new RootCommand("MV");
         rootCommand.AddCommand(openCommand);
         rootCommand.AddCommand(createVerseCommand);
+        rootCommand.AddCommand(ideCommand);
     
         return await rootCommand.InvokeAsync(args);
     }
