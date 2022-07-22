@@ -84,4 +84,9 @@ public class OneDConsole : IMetaVerse
 
         return Task.CompletedTask;
     }
+
+    public Task Init()
+    {
+        return Task.CompletedTask;
+    }
 }
