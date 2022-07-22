@@ -8,14 +8,8 @@ public class App
 {
     public async Task Start(IManifest manifest)
     {
-        Application.Init ();
-
-        var metaVerseClient = new MVClient(new OneD.OneDConsole(Application.Top));
+        var metaVerseClient = new MVClient(new OneD.OneDConsole( ));
         await metaVerseClient.Init(manifest);
-
-        await metaVerseClient.Start();
-        
-        Application.Run ();
-        Application.Shutdown ();
+        await metaVerseClient.Start();        
     }
 }

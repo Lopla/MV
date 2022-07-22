@@ -8,9 +8,12 @@ public class OneDConsole : IMetaVerse
 {
     private View parent;
 
-    public OneDConsole(View parent)
+    public OneDConsole()
     {
-        this.parent = parent;
+        
+        Application.Init ();
+
+        this.parent = Application.Top;
     }
     
     public void Show(View view, IElement element, int idx = 0)
@@ -72,5 +75,13 @@ public class OneDConsole : IMetaVerse
 
         this.Show(w, element);
         this.parent.Add(w);  
+    }
+
+    public Task Start()
+    {
+        Application.Run ();
+        Application.Shutdown ();
+
+        return Task.CompletedTask;
     }
 }

@@ -18,6 +18,7 @@ public class MVClient
     public async Task Start()
     {
         await manifest.Verse().Start();
+        await context.Start();
     }
 
     /// <summary>
