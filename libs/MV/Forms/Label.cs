@@ -5,9 +5,9 @@ namespace MV.Forms
 {
     public class Label : IElement
     {
-        public Label(string text = "")
+        public Label(I18NString? text = null)
         {
-            this.Text = (I18NString)text;
+            this.Text = text ?? new I18NString();
         }
         
         public I18NString Text{get;set;} = new I18NString();

@@ -20,7 +20,7 @@ namespace MV.Models
             return t.T;
         }
     
-        public static explicit operator I18NString(string t)
+        public static implicit operator I18NString(string t)
         {
             return new I18NString(t);
         }

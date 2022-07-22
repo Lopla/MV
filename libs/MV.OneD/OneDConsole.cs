@@ -12,7 +12,7 @@ public class OneDConsole : IMetaVerse
     {
         this.parent = parent;
     }
-
+    
     public void Show(View view, IElement element, int idx = 0)
     {
         if(element is VFrame vframe)
@@ -29,8 +29,8 @@ public class OneDConsole : IMetaVerse
             {
                 this.Show(fv, item.Value, relIdx++);
             }
-
             view.Add(fv);
+
         }else if(element is Forms.Label lb)
         {
             var label = new Terminal.Gui.Label()
@@ -41,13 +41,36 @@ public class OneDConsole : IMetaVerse
                 Y= idx,
             };
             view.Add(label);
+        }else if(element is Forms.Button bt)
+        {
+            var label = new Terminal.Gui.Button()
+            {
+                Text = bt.Text.T,
+                Width = Dim.Fill(),
+                Height = 1,
+                Y= idx,
+            };
+
+            label.Clicked+=()=>{
+                bt.OnClicked();
+            };
+        
+            view.Add(label);
+        }else{
+            throw new NotImplementedException($"Not supported gui element: {element.GetType()}");
         }
     }
 
     public void Show(IElement element)
     {
+        // it always starts with the window
+        Window w = new Window()
+        {
+            Width = Dim.Percent(50),
+            Height = Dim.Percent(50)
+        };
 
-        this.Show(this.parent, element);
-            
+        this.Show(w, element);
+        this.parent.Add(w);  
     }
 }
