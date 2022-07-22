@@ -10,7 +10,7 @@ public static class CommandLineApplication
         var ideCommand = new Command("ide", "Start metaverse browser with Terminal GUI and debug capabilities.");
         ideCommand.SetHandler( async()=>{
             var app = new App();            
-            await app.Start(address);    
+            await app.Start();    
         });
 
        var optionAddress = new Option<int>(
@@ -35,7 +35,7 @@ public static class CommandLineApplication
 
         openCommand.SetHandler( async (address)=>{
             var app = new App();            
-            await app.Start(address);            
+            await app.Start();            
         }, optionAddress);
 
         var rootCommand = new RootCommand("MV");

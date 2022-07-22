@@ -19,7 +19,7 @@
             "type": "process",
             "args": [
                 "build",
-                "${workspaceFolder}/clients/MV.OneD/MV.OneD.csproj",
+                "${workspaceFolder}/clients/MV.OneD.Client/MV.OneD.Client.csproj",
                 "/property:GenerateFullPaths=true",
                 "/consoleloggerparameters:NoSummary"
             ],
