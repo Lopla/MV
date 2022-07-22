@@ -7,7 +7,7 @@
             "type": "process",
             "args": [
                 "build",
-                "${workspaceFolder}/clients/MV.TwoD/MV.TwoD.csproj",
+                "${workspaceFolder}/clients/MV.TwoD.Client/MV.TwoD.Client.csproj",
                 "/property:GenerateFullPaths=true",
                 "/consoleloggerparameters:NoSummary"
             ],

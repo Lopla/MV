@@ -1,3 +1,5 @@
+using MV.Client;
+using MV.Interfaces;
 using Pla.Lib;
 using Pla.Lib.UI;
 using SkiaSharp;
@@ -5,19 +7,25 @@ using Button = Pla.Lib.UI.Button;
 
 namespace MV.TwoD
 {
-    internal class Ctx : IContext
+    public class Ctx : IContext
     {
+        public Ctx(IManifest manifest)
+        {
+            Manifest = manifest;
+        }
+
         private List<SKPoint> points = new List<SKPoint>();
         private IEngine e;
         private Manager manager;
-        private Logic logic;
+
+        public IManifest Manifest { get; }
 
         public void Init(IEngine engine)
         {
+            
             this.e = engine;
             this.manager = new Manager(engine);
-            this.logic = new Logic();
-
+            
             var b = new Button()
             {
                 Bounds = new SKRect(10, 10, 30, 30),
@@ -33,7 +41,17 @@ namespace MV.TwoD
             var number = new Edit();
 
             this.manager.Add(b);
-            this.e.RequestTransparentWindow();
+ 
+            this.InitAndRunMV().Wait();
+        }
+
+
+        private async Task InitAndRunMV()
+        {
+            var metaverseOneDContext = new TwoDControl(this.manager);
+            var metaVerseClient = new MVClient(metaverseOneDContext);
+            await metaVerseClient.Init(Manifest);
+            await metaVerseClient.Start();
         }
 
         public IPainter GetPainter()
