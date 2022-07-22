@@ -16,7 +16,7 @@ namespace MV.OneD.UI
         {
             var label = new Label()
             {
-                Text = Client.Def.Name.T,
+                Text = "mv",
                 X = Pos.Center(),
                 Y = Pos.Center(),
             };

@@ -7,6 +7,8 @@ public class App
 {
     public async Task Start(int? address)
     {
+        var metaverseOneDContext = new OneDContext();
+
         Application.Init ();
 
         var metaVerseClient = new MVClient();

@@ -1,16 +1,17 @@
 using MV.Client;
+using MV.Interfaces;
 using Terminal.Gui;
 
 namespace MV.OneD.UI;
 
 public class App
 {
-    public async Task Start(int? address)
+    public async Task Start(IManifest manifest)
     {
         Application.Init ();
 
-        var metaVerseClient = new MVClient();
-        await metaVerseClient.Init();
+        var metaVerseClient = new MVClient(new OneD.OneDConsole());
+        await metaVerseClient.Init(manifest);
 
         var nav = new NavigcationMenu(metaVerseClient);
         nav.Setup(Application.Top);
