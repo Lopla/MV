@@ -14,5 +14,17 @@ namespace MV.Models
         {
             this.T = text;
         }
+        
+        public static implicit operator string(I18NString t)
+        {
+            return t.T;
+        }
+    
+        public static explicit operator I18NString(string t)
+        {
+            return new I18NString(t);
+        }
+
+        public override string ToString() => this.T;
     }
 }

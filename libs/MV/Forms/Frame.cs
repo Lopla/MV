@@ -2,7 +2,7 @@ using MV.Interfaces;
 
 namespace MV.Forms;
 
-public class Frame : IFrame
+public abstract class Frame : IFrame
 {
     public Frame()
     {
@@ -11,7 +11,7 @@ public class Frame : IFrame
 
     public Dictionary<string, IElement> Elements { get; protected set;}
 
-    public void Add(string name, IElement element)
+    public void Add(IElement element)
     {
         this.Elements.Add(Guid.NewGuid().ToString(), element);
     }

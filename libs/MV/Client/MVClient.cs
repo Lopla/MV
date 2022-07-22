@@ -8,10 +8,16 @@ namespace MV.Client;
 public class MVClient
 {
     private IMetaVerse context;
+    private IManifest manifest;
 
     public MVClient(IMetaVerse context)
     {
         this.context = context;
+    }
+
+    public async Task Start()
+    {
+        await manifest.Verse().Start();
     }
 
     /// <summary>
@@ -33,7 +39,8 @@ public class MVClient
 
         //this.Def = DownloadDefinition(reference.GH).Result;
 
-        return Task.CompletedTask;    }
+        return Task.CompletedTask;    
+    }
 
 
     /// <summary>
@@ -43,6 +50,7 @@ public class MVClient
     /// <returns></returns>
     public async Task Init(IManifest manifest)
     {
+        this.manifest = manifest;
         await manifest.Verse().Init(this.context);
     }
 

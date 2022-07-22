@@ -10,20 +10,11 @@ public class App
     {
         Application.Init ();
 
-        var metaVerseClient = new MVClient(new OneD.OneDConsole());
+        var metaVerseClient = new MVClient(new OneD.OneDConsole(Application.Top));
         await metaVerseClient.Init(manifest);
 
-        var nav = new NavigcationMenu(metaVerseClient);
-        nav.Setup(Application.Top);
-
-        var label = new Label("Meta verse") 
-        {
-            X = Pos.Center(),
-            Y = 0,
-            Height = 1,
-        };
- 
-        Application.Top.Add(label);
+        await metaVerseClient.Start();
+        
         Application.Run ();
         Application.Shutdown ();
     }
