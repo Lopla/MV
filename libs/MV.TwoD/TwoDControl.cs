@@ -4,9 +4,14 @@ using Pla.Lib.UI;
 namespace MV.TwoD;
 public class TwoDControl : IMetaVerse
 {
-    public TwoDControl(Manager m)
+    public TwoDControl()
     {
         
+    }
+
+    public Task Init()
+    {
+        return Task.CompletedTask;
     }
 
     public void Show(IElement form)
@@ -16,6 +21,8 @@ public class TwoDControl : IMetaVerse
 
     public Task Start()
     {
+        Pla.Win.App.PlaMain(new Ctx());
         return Task.CompletedTask;
     }
+    
 }

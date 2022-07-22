@@ -1,3 +1,4 @@
+using MV.Client;
 using Pla.Lib.UI;
 
 namespace MV.TwoD.Client;
@@ -5,10 +6,16 @@ namespace MV.TwoD.Client;
 static class Program
 {
     [STAThread]
-    static void Main()
+    static async Task Main()
     {
-
         ApplicationConfiguration.Initialize();
-        Pla.Win.App.PlaMain(new Ctx(new Home.HomeManifest()));
+
+
+        var manifest = new Home.HomeManifest();
+
+        var metaVerseClient = new MVClient(new TwoDControl());
+        await metaVerseClient.Init(manifest);
+        await metaVerseClient.Start();
     }    
 }
+

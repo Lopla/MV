@@ -1,12 +1,13 @@
 using MV.Client;
 using MV.Interfaces;
 using Terminal.Gui;
+using Pla.Lib.UI;
 
 namespace MV.OneD.UI;
 
-public class App
+public static class Clients
 {
-    public async Task Start(IManifest manifest)
+    public static async Task StartOneD(IManifest manifest)
     {
         var metaVerseClient = new MVClient(new OneD.OneDConsole( ));
         await metaVerseClient.Init(manifest);

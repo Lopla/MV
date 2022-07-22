@@ -4,5 +4,6 @@ namespace MV.Interfaces
     {
         void Show(IElement form);
         Task Start();
+        Task Init();
     }
 }

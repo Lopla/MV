@@ -9,9 +9,8 @@ namespace MV.TwoD
 {
     public class Ctx : IContext
     {
-        public Ctx(IManifest manifest)
+        public Ctx()
         {
-            Manifest = manifest;
         }
 
         private List<SKPoint> points = new List<SKPoint>();
@@ -41,17 +40,6 @@ namespace MV.TwoD
             var number = new Edit();
 
             this.manager.Add(b);
- 
-            this.InitAndRunMV().Wait();
-        }
-
-
-        private async Task InitAndRunMV()
-        {
-            var metaverseOneDContext = new TwoDControl(this.manager);
-            var metaVerseClient = new MVClient(metaverseOneDContext);
-            await metaVerseClient.Init(Manifest);
-            await metaVerseClient.Start();
         }
 
         public IPainter GetPainter()

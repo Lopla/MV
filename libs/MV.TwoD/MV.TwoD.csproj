@@ -6,10 +6,11 @@
 
   <ItemGroup>
     <PackageReference Include="Pla.Lib.UI" Version="1.0.2" />
+    <PackageReference Include="Pla.Win" Version="1.0.2" />
   </ItemGroup>
 
   <PropertyGroup>
-    <TargetFramework>net6.0</TargetFramework>
+    <TargetFramework>net6.0-windows</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
   </PropertyGroup>

@@ -53,6 +53,7 @@ public class MVClient
     {
         this.manifest = manifest;
         await manifest.Verse().Init(this.context);
+        context.Init();
     }
 
     /// <summary>
