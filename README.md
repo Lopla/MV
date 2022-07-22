@@ -5,17 +5,10 @@
 - [MV.TwoD](/clients/MV.TwoD) - Allows to display two dimensions. Uses SkiaSharp - perfect for mobile and desktop
 - MV.ThreeD - AAA solution perfect for high performance PC, or virtual environments
 - AR - TBD 
-## Packages
+## Libs
 - Packages to start implementation of verses in .net
 
-## Worlds
-- Open catalogue for all worlds
-  - [0](/world/0) - default world for all users
-    
-## World
-World is named by a number. 
-
-# Concepts
+## Concepts
 There are some concepts that describe general use cases, but they can be questioned in more sophisticated scenario so full potential of a platform will be utilized. For ex.: 3d AAA game will not be available on a text terminal. but chat or some kind of presence could.
  * Worlds should be open sourced in most basic scenarios
  * Most of the worlds should allow some access on all 4 dimensions (1, 2 , 3, AR)
@@ -25,3 +18,6 @@ There are some concepts that describe general use cases, but they can be questio
  * 2d could be accessible from 3d
  * 3d could be accessible from AR - TBD
  * IDE for the MV should be available in 1d
+
+ ## Datamodel concepts
+ # Frame
