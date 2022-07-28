@@ -1,79 +1,83 @@
+using System;
+using System.Net.Http;
+using System.Threading.Tasks;
 using MV.Interfaces;
 using MV.Models;
-using System.Net.Http.Headers;
-using System.Net.Http.Json;
 
-namespace MV.Client;
-
-public class MVClient
+namespace MV.Client
 {
-    private IMetaVerse context;
-    private IManifest manifest;
-
-    public MVClient(IMetaVerse context)
+    public class MVClient
     {
-        this.context = context;
-    }
+        private IMetaVerse context;
+        private IManifest manifest;
 
-    public async Task Start()
-    {
-        await manifest.Verse().Start();
-        await context.Start();
-    }
-
-    /// <summary>
-    /// Load remote verse and initilized it
-    /// </summary>
-    /// <param name="reference"></param>
-    /// <returns></returns>
-    public Task Init(VerseReference reference = null)
-    {
-        if(reference == null)
+        public MVClient(IMetaVerse context)
         {
-            reference = new VerseReference()
-            {
-                N='0',
-                GH="llaagg/mv-home/main/",
-                Name = new I18NString("Home world")
-            };
+            this.context = context;
         }
 
-        //this.Def = DownloadDefinition(reference.GH).Result;
+        public async Task Start()
+        {
+            await manifest.Verse().Start();
+            await context.Start();
+        }
 
-        return Task.CompletedTask;    
-    }
+        /// <summary>
+        /// Load remote verse and initilized it
+        /// </summary>
+        /// <param name="reference"></param>
+        public Task Init(VerseReference reference = null)
+        {
+            if(reference == null)
+            {
+                reference = new VerseReference()
+                {
+                    N='0',
+                    GH="llaagg/mv-home/main/",
+                    Name = new I18NString("Home world")
+                };
+            }
+
+            //this.Def = DownloadDefinition(reference.GH).Result;
+
+            return Task.CompletedTask;    
+        }
 
 
-    /// <summary>
-    /// Initilize verse from definition
-    /// </summary>
-    /// <param name="definition"></param>
-    /// <returns></returns>
-    public async Task Init(IManifest manifest)
-    {
-        this.manifest = manifest;
-        await manifest.Verse().Init(this.context);
-        context.Init();
-    }
+        /// <summary>
+        /// Initilize verse from definition
+        /// </summary>
+        /// <param name="definition"></param>
+        /// <returns></returns>
+        public async Task Init(IManifest manifest)
+        {
+            this.manifest = manifest;
+            await manifest.Verse().Init(this.context);
+            context.Init();
+        }
 
-    /// <summary>
-    /// Downloads remote verse definition 
-    /// </summary>
-    /// <param name="repo"></param>
-    /// <returns></returns>
-    public async Task<VerseDefinition> DownloadDefinition(string repo)
-    {
-        var u = new UriBuilder("https://raw.githubusercontent.com");
-        u.Path+=repo.TrimEnd('/');
-        u.Path+="/verse.json";
+        /// <summary>
+        /// Downloads remote verse definition 
+        /// </summary>
+        /// <param name="repo"></param>
+        /// <returns></returns>
+        public async Task<VerseDefinition> DownloadDefinition(string repo)
+        {
+            var u = new UriBuilder("https://raw.githubusercontent.com");
+            u.Path+=repo.TrimEnd('/');
+            u.Path+="/verse.json";
 
-        using HttpClient client = new();
-        client.DefaultRequestHeaders.Accept.Clear();
-        client.DefaultRequestHeaders.Add("User-Agent", "Revuo home DownloadArtefact");
+            using(HttpClient client = new HttpClient())
+            {
+                client.DefaultRequestHeaders.Accept.Clear();
+                client.DefaultRequestHeaders.Add("User-Agent", "Revuo home DownloadArtefact");
 
-        //TODO: fix a bug in system console
-        //remove Result
-        var url = u.ToString();
-        return await client.GetFromJsonAsync<VerseDefinition>(url);
+                //TODO: fix a bug in system console
+                //remove Result
+                var url = u.ToString();
+                return null;
+                //return await client.GetFromJsonAsync<VerseDefinition>(url);
+            }
+        }
     }
 }

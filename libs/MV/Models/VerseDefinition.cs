@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+
 namespace MV.Models
 {
     public class VerseDefinition

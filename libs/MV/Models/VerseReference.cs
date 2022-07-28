@@ -1,3 +1,5 @@
+using System;
+
 namespace MV.Models
 {
     public class VerseReference

@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+
 namespace MV.Interfaces
 {
     public interface IFrame : IElement

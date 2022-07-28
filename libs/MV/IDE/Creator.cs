@@ -1,7 +1,8 @@
+using System.Collections.Generic;
 using MV.Models;
 
-namespace MV.IDE.Creator;
-
+namespace MV.IDE.Creator
+{
 public class Creator
 {
     public Creator()
@@ -37,7 +38,9 @@ public class Creator
             }
         };
 
-        return
-            System.Text.Json.JsonSerializer.Serialize(verse);
+        
+        return null;
+            //System.Text.Json.JsonSerializer.Serialize(verse);
     }
+}
 }
