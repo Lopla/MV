@@ -14,7 +14,7 @@ namespace MV.TwoD
         }
 
         private List<SKPoint> points = new List<SKPoint>();
-        private IEngine e;
+        private IEngine e = null;
         public Manager manager;
 
         public IManifest Manifest { get; }
