@@ -1,6 +1,7 @@
 ﻿using System.Windows.Forms;
 using MV.Forms;
 using MV.Interfaces;
+using Pla.Lib.UI;
 using Pla.Win;
 using SkiaSharp;
 using Button = MV.Forms.Button;
@@ -36,22 +37,21 @@ public class TwoDControl : IMetaVerse
         // and start size calculation from what we have
 
         int buttonHeight = 30;
-        if (element is Frame f)
+        if (element is Forms.Frame f)
         {
-            IWidgetContainer frame;
-            if (f is VFrame || f is Frame)
+            IWidgetContainer frame = null;
+            if (f is VFrame || f is Forms.Frame)
             {
-                frame = this.ctx.manager.Add(new Pla.Lib.UI.Frame());
+                frame = (IWidgetContainer)container.Add(new Pla.Lib.UI.Frame());
             }
             if(f is HFrame)
             {
-                frame = this.ctx.manager.Add(new Pla.Lib.UI.Frame(Pla.Lib.UI.FrameStyle.Horizontal));
+                frame =(IWidgetContainer) container.Add(new Pla.Lib.UI.Frame(Pla.Lib.UI.FrameStyle.Horizontal));
             }
 
             foreach (var e in f.Elements)
             {
-                this.Show(e.Value, frame);
-                
+                this.Show(e.Value, frame);                
             }
         }
         else if (element is Forms.Label lb)
