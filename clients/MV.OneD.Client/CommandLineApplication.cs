@@ -35,7 +35,7 @@ public static class CommandLineApplication
 
         openCommand.SetHandler( async (address)=>{
             var app = new App();            
-            await app.Start();            
+            await app.Start();
         }, optionAddress);
 
         var rootCommand = new RootCommand("MV");

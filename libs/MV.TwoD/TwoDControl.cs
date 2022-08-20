@@ -2,9 +2,11 @@
 using MV.Forms;
 using MV.Interfaces;
 using Pla.Lib.UI;
+using Pla.Lib.UI.Interfaces;
 using Pla.Win;
 using SkiaSharp;
 using Button = MV.Forms.Button;
+using FrameStyle = Pla.Lib.UI.Widgets.Enums.FrameStyle;
 
 namespace MV.TwoD;
 public class TwoDControl : IMetaVerse
@@ -40,13 +42,12 @@ public class TwoDControl : IMetaVerse
         if (element is Forms.Frame f)
         {
             IWidgetContainer frame = null;
-            if (f is VFrame || f is Forms.Frame)
+            if (f is VFrame)
             {
-                frame = (IWidgetContainer)container.Add(new Pla.Lib.UI.Frame());
-            }
-            if(f is HFrame)
+                frame = (IWidgetContainer)container.Add(new Pla.Lib.UI.Widgets.Frame());
+            }else if(f is HFrame)
             {
-                frame =(IWidgetContainer) container.Add(new Pla.Lib.UI.Frame(Pla.Lib.UI.FrameStyle.Horizontal));
+                frame =(IWidgetContainer) container.Add(new Pla.Lib.UI.Widgets.Frame(FrameStyle.Horizontal));
             }
 
             foreach (var e in f.Elements)
@@ -56,16 +57,16 @@ public class TwoDControl : IMetaVerse
         }
         else if (element is Forms.Label lb)
         {
-            container.Add(new Pla.Lib.UI.Button()
+            container.Add(new Pla.Lib.UI.Widgets.Button()
             {
-                Label = lb.Text,
+                Text= lb.Text,
             });
         }
         else if (element is Button bt)
         {
-            container.Add(new Pla.Lib.UI.Button()
+            container.Add(new Pla.Lib.UI.Widgets.Button()
             {
-                Label = bt.Text,
+                Text= bt.Text,
             });
         }
     }
