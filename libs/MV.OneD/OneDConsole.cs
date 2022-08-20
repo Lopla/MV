@@ -18,49 +18,73 @@ public class OneDConsole : IMetaVerse
     
     public void Show(View view, IElement element, int idx = 0)
     {
-        if(element is VFrame vframe)
+        switch (element)
         {
-            var fv = new FrameView()
+            case VFrame vframe:
             {
-                Width = Dim.Fill(),
-                Height = Dim.Fill(),
-                Y=idx
-            };
+                var fv = new FrameView()
+                {
+                    Width = Dim.Fill(),
+                    Height = Dim.Fill(),
+                    Y=idx
+                };
 
-            int relIdx = 0;
-            foreach (var item in vframe.Elements)
-            {
-                this.Show(fv, item.Value, relIdx++);
+                int relIdx = 0;
+                foreach (var item in vframe.Elements)
+                {
+                    this.Show(fv, item.Value, relIdx++);
+                }
+                view.Add(fv);
+                break;
             }
-            view.Add(fv);
-
-        }else if(element is Forms.Label lb)
-        {
-            var label = new Terminal.Gui.Label()
+            case HFrame hFrame:
             {
-                Text = lb.Text.T,
-                Width = Dim.Fill(),
-                Height = 1,
-                Y= idx,
-            };
-            view.Add(label);
-        }else if(element is Forms.Button bt)
-        {
-            var label = new Terminal.Gui.Button()
-            {
-                Text = bt.Text.T,
-                Width = Dim.Fill(),
-                Height = 1,
-                Y= idx,
-            };
+                var fv = new FrameView()
+                {
+                    Width = Dim.Fill(),
+                    Height = Dim.Fill(),
+                    Y = idx
+                };
 
-            label.Clicked+=()=>{
-                bt.OnClicked();
-            };
+                int relIdx = 0;
+                foreach (var item in hFrame.Elements)
+                {
+                    this.Show(fv, item.Value, relIdx++);
+                }
+                view.Add(fv);
+                break;
+            }
+            case Forms.Label lb:
+            {
+                var label = new Terminal.Gui.Label()
+                {
+                    Text = lb.Text.T,
+                    Width = Dim.Fill(),
+                    Height = 1,
+                    Y= idx,
+                };
+                view.Add(label);
+                break;
+            }
+            case Forms.Button bt:
+            {
+                var label = new Terminal.Gui.Button()
+                {
+                    Text = bt.Text.T,
+                    Width = Dim.Fill(),
+                    Height = 1,
+                    Y= idx,
+                };
+
+                label.Clicked+=()=>{
+                    bt.OnClicked();
+                };
         
-            view.Add(label);
-        }else{
-            throw new NotImplementedException($"Not supported gui element: {element.GetType()}");
+                view.Add(label);
+                break;
+            }
+            default:
+                throw new NotImplementedException($"Not supported gui element: {element.GetType()}");
         }
     }
 

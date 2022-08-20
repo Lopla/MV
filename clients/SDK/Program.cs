@@ -3,7 +3,7 @@ using SDK.Verse;
 
 var manifest = new TestVerse();
 
-//await Clients.StartOneD(manifest);
+await Clients.StartOneD(manifest);
 
-await Clients.StartTwoD(manifest);
+//await Clients.StartTwoD(manifest);
 
