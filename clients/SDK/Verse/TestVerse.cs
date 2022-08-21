@@ -23,26 +23,31 @@ internal class TestVerse : IManifest, IVerse
         //1. create UI
         //2. ask to show it
 
+        //var dialer = new VFrame();
+        //for (var x = 0; x < 3; x++)
+        //{
+        //    var row = new HFrame();
+        //    for (var y = 0; y < 3; y++)
+        //    {
+        //        var number = x + y * 3 + 1;
+        //        row.Add(new Label($"{number}"));
+        //    }
+
+        //    dialer.Add(row);
+        //}
+
         var dialer = new VFrame();
-        for (var x = 0; x < 3; x++)
-        {
-            var row = new HFrame();
-            for (var y = 0; y < 3; y++)
-            {
-                var number = x + y * 3 + 1;
-                row.Add(new Label($"{number}"));
-            }
 
-            dialer.Add(row);
-        }
-
-        var lastRow = new HFrame();
-        lastRow.Add(new Label("0"));
+        var lastRow = new VFrame();
+        lastRow.Add(new Label("1"));
+        lastRow.Add(new Button("2"));
         dialer.Add(lastRow);
 
-        dialer.Add(new Button("Close"));
-
+        dialer.Add(new Button("3"));
+        dialer.Add(new Button("4"));
         Context.Show(dialer);
+        
+        //Context.Show(new Button("5"));
     }
 
     public async Task Loop()
