@@ -8,10 +8,6 @@ namespace MV.OneD;
 
 public class OneDConsole : IMetaVerse
 {
-    private View rootView;
-
-    private Stack<View> viewParents = new();
-
     public OneDConsole()
     {
         Application.Init();
