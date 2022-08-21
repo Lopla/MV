@@ -22,7 +22,7 @@ public class OneDConsole : IMetaVerse
             Height = Dim.Percent(50)
         };
 
-        Show(w, element, (0,0));
+        ShowV(w, element, (0,0));
 
         Application.Top.Add(w);
     }
@@ -40,11 +40,11 @@ public class OneDConsole : IMetaVerse
         return Task.CompletedTask;
     }
 
-    private (int offsetX, int offsetY) Show(View view, IElement element, (int offsetX, int offsetY) offsets)
+    private (int offsetX, int offsetY) ShowV(View view, IElement element, (int offsetX, int offsetY) offsets)
     {
         switch (element)
         {
-            case Frame frame:
+            case VFrame frame:
             {
                 var fv = new FrameView
                 {
@@ -55,16 +55,39 @@ public class OneDConsole : IMetaVerse
                 var startOffset = (0, 0);
                 foreach (var item in frame.Elements)
                 {
-                    startOffset = Show(fv, item.Value, startOffset);
+                    startOffset = ShowV(fv, item.Value, startOffset);
                 }
 
-                offsets.offsetX += startOffset.Item1 ;
-                offsets.offsetY += startOffset.Item2 +2;
+                offsets.offsetX += startOffset.Item1;
+                offsets.offsetY += startOffset.Item2 + 2;
 
                 fv.Height = startOffset.Item2 + 2;
 
                 view.Add(fv);
-                
+
+                break;
+            }
+            case HFrame frame:
+            {
+                var fv = new FrameView
+                {
+                    Width = Dim.Fill(),
+                    Y = offsets.offsetY
+                };
+
+                var startOffset = (0, 0);
+                foreach (var item in frame.Elements)
+                {
+                    startOffset = ShowH(fv, item.Value, startOffset);
+                }
+
+                offsets.offsetX += startOffset.Item1;
+                offsets.offsetY += startOffset.Item2 + 2;
+
+                fv.Height = startOffset.Item2 + 2;
+
+                view.Add(fv);
+
                 break;
             }
             case Label lb:
@@ -95,6 +118,91 @@ public class OneDConsole : IMetaVerse
                 view.Add(label);
                 break;
             }
+            default:
+                throw new NotImplementedException($"Not supported gui element: {element.GetType()}");
+        }
+
+        return offsets;
+    }
+
+    private (int offsetX, int offsetY) ShowH(View view, IElement element, (int offsetX, int offsetY) offsets)
+    {
+        switch (element)
+        {
+            case VFrame frame:
+                {
+                    var fv = new FrameView
+                    {
+                        Width = Dim.Fill(),
+                        Y = offsets.offsetY
+                    };
+
+                    var startOffset = (0, 0);
+                    foreach (var item in frame.Elements)
+                    {
+                        startOffset = ShowV(fv, item.Value, startOffset);
+                    }
+
+                    offsets.offsetX += startOffset.Item1;
+                    offsets.offsetY += startOffset.Item2 + 2;
+
+                    fv.Height = startOffset.Item2 + 2;
+
+                    view.Add(fv);
+
+                    break;
+                }
+            case HFrame frame:
+                {
+                    var fv = new FrameView
+                    {
+                        Width = Dim.Fill(),
+                        Y = offsets.offsetY
+                    };
+
+                    var startOffset = (0, 0);
+                    foreach (var item in frame.Elements)
+                    {
+                        startOffset = ShowH(fv, item.Value, startOffset);
+                    }
+
+                    offsets.offsetX += startOffset.Item1;
+                    offsets.offsetY += startOffset.Item2 + 2;
+
+                    fv.Height = startOffset.Item2 + 2;
+
+                    view.Add(fv);
+
+                    break;
+                }
+            case Label lb:
+                {
+                    var label = new Terminal.Gui.Label
+                    {
+                        Text = lb.Text.T,
+                        Width = Dim.Fill(),
+                        Height = 1,
+                        Y = offsets.offsetY
+                    };
+                    offsets.offsetY++;
+                    view.Add(label);
+                    break;
+                }
+            case Button bt:
+                {
+                    var label = new Terminal.Gui.Button
+                    {
+                        Text = bt.Text.T,
+                        Width = Dim.Fill(),
+                        Height = 1,
+                        Y = offsets.offsetY
+                    };
+                    offsets.offsetY++;
+                    label.Clicked += () => { bt.OnClicked(); };
+
+                    view.Add(label);
+                    break;
+                }
             default:
                 throw new NotImplementedException($"Not supported gui element: {element.GetType()}");
         }
