@@ -1,6 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <ItemGroup>
+    <ProjectReference Include="..\MV.Skia\MV.Skia.csproj" />
     <ProjectReference Include="..\MV\MV.csproj" />
   </ItemGroup>
 
