@@ -1,20 +1,20 @@
 using System.Collections.Generic;
 using MV.Models;
 
-namespace MV.IDE.Creator
+namespace MV.IDE
 {
-public class Creator
-{
-    public Creator()
+    public class Creator
     {
-
-    }
-
-    public string DefaultVerse()
-    {
-        var verse = new VerseDefinition()
+        public Creator()
         {
-            E = new List<VerseReference>()
+
+        }
+
+        public string DefaultVerse()
+        {
+            var verse = new VerseDefinition()
+            {
+                E = new List<VerseReference>()
             {
                 new VerseReference()
                 {
@@ -29,18 +29,18 @@ public class Creator
                     }
                 }
             },
-            Name =  new I18NString("Home")
-            {
-                Translations = new Dictionary<string, string>()
+                Name = new I18NString("Home")
+                {
+                    Translations = new Dictionary<string, string>()
                 {
                     {"pl-PL","Dom"}
                 }
-            }
-        };
+                }
+            };
 
-        
-        return null;
+
+            return null;
             //System.Text.Json.JsonSerializer.Serialize(verse);
+        }
     }
-}
 }

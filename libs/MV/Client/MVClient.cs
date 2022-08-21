@@ -10,6 +10,7 @@ namespace MV.Client
     {
         private IMetaVerse context;
         private IManifest manifest;
+        private IVerse verse;
 
         public MVClient(IMetaVerse context)
         {
@@ -18,7 +19,7 @@ namespace MV.Client
 
         public async Task Start()
         {
-            await manifest.Verse().Start();
+            await verse.Start();
             await context.Start();
         }
 
@@ -52,8 +53,10 @@ namespace MV.Client
         public async Task Init(IManifest manifest)
         {
             this.manifest = manifest;
-            await manifest.Verse().Init(this.context);
-            context.Init();
+            this.verse = manifest.Verse();
+
+            await verse.Init(this.context);
+            await context.Init();
         }
 
         /// <summary>

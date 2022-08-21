@@ -1,13 +1,10 @@
 <Project Sdk="Microsoft.NET.Sdk">
-
-  <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
-    <PackageId>MV</PackageId>
-    <Version>0.9.1</Version>
-    <Authors>Paweł Gałęzowski</Authors>
-    <Company>lopla</Company>
-    <Description>Base packge for creating metaverses.</Description>
- 
-  </PropertyGroup>
-
+	<PropertyGroup>
+		<TargetFramework>netstandard2.0</TargetFramework>
+		<PackageId>MV</PackageId>
+		<Version>0.9.1</Version>
+		<Authors>Paweł Gałęzowski</Authors>
+		<Company>lopla</Company>
+		<Description>Base packge for creating metaverses.</Description>
+	</PropertyGroup>
 </Project>

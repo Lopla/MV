@@ -1,7 +1,7 @@
 using MV.Client;
 using Terminal.Gui;
 
-namespace MV.OneD.UI;
+namespace MV.OneD.Client.UI;
 
 public class App
 {
