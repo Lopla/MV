@@ -2,34 +2,27 @@ using MV.Interfaces;
 using Pla.Lib;
 using Pla.Lib.UI;
 
-namespace MV.TwoD
+namespace MV.TwoD;
+
+public class Ctx : IContext
 {
-    public class Ctx : IContext
+    private IEngine _engine;
+
+    public Manager manager;
+    
+    public void Init(IEngine engine)
     {
-        public Ctx()
-        {
-        }
+        _engine = engine;
+        manager = new Manager(engine);
+    }
 
-        private IEngine e = null;
+    public IPainter GetPainter()
+    {
+        return manager;
+    }
 
-        public Manager manager;
-
-        public IManifest Manifest { get; }
-
-        public void Init(IEngine engine)
-        {            
-            this.e = engine;
-            this.manager = new Manager(engine);
-        }
-
-        public IPainter GetPainter()
-        {
-            return this.manager;
-        }
-
-        public IControl GetControl()
-        {
-            return this.manager;
-        }
+    public IControl GetControl()
+    {
+        return manager;
     }
 }

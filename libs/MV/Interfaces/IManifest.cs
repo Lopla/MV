@@ -1,13 +1,14 @@
 using MV.Models;
 
-namespace MV.Interfaces{
-
-public interface IManifest
+namespace MV.Interfaces
 {
-    VerseDefinition Definition();
+    /// <summary>
+    /// Manifest describes this world (<see cref="Verse()"/>) and informs about metadata
+    /// </summary>
+    public interface IManifest
+    {
+        VerseDefinition Definition();
 
-    IVerse Verse();
-}
-
-
+        IVerse Verse();
+    }
 }
