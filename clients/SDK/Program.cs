@@ -2,7 +2,7 @@
 using SDK.Verse;
 
 
-bool OneDimension = true;
+bool OneDimension = false;
 
 if (OneDimension)
 {

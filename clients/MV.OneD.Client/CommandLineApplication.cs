@@ -1,7 +1,6 @@
+using MV.IDE;
+using MV.OneD.Client.UI;
 using System.CommandLine;
-using System.CommandLine.Invocation;
-using MV.IDE.Creator;
-using MV.OneD.UI;
 
 public static class CommandLineApplication
 {

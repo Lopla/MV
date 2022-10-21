@@ -2,10 +2,13 @@ using System.Threading.Tasks;
 
 namespace MV.Interfaces
 {
-    public interface IMetaVerse
+    public interface IMetaVerse : IMetaVerseContext
     {
-        void Show(IElement form);
+        /// <summary>
+        /// Started only once
+        /// </summary>
         Task Start();
+
         Task Init();
     }
 }

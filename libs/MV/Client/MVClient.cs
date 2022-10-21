@@ -8,19 +8,19 @@ namespace MV.Client
 {
     public class MVClient
     {
-        private IMetaVerse context;
+        private IMetaVerse metaverse;
         private IManifest manifest;
         private IVerse verse;
 
-        public MVClient(IMetaVerse context)
+        public MVClient(IMetaVerse metaVerse)
         {
-            this.context = context;
+            this.metaverse = metaVerse;
         }
 
         public async Task Start()
         {
             await verse.Start();
-            await context.Start();
+            await metaverse.Start();
         }
 
         /// <summary>
@@ -55,8 +55,8 @@ namespace MV.Client
             this.manifest = manifest;
             this.verse = manifest.Verse();
 
-            await verse.Init(this.context);
-            await context.Init();
+            await verse.Init(this.metaverse);
+            await metaverse.Init();
         }
 
         /// <summary>
