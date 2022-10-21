@@ -2,7 +2,14 @@
 using SDK.Verse;
 
 
-//await Clients.StartOneD(new VerseManifest());
+bool OneDimension = true;
 
-await Clients.StartTwoD(new VerseManifest());
+if (OneDimension)
+{
+    await Clients.StartOneD(new VerseManifest());
+}
+else
+{
+    await Clients.StartTwoD(new VerseManifest());
+}
 
