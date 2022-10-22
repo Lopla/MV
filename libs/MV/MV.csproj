@@ -7,4 +7,7 @@
 		<Company>lopla</Company>
 		<Description>Base packge for creating metaverses.</Description>
 	</PropertyGroup>
+	<ItemGroup>
+	  <PackageReference Include="System.Runtime.Loader" Version="4.3.0" />
+	</ItemGroup>
 </Project>

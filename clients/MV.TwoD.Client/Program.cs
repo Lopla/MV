@@ -11,7 +11,7 @@ internal static class Program
         ApplicationConfiguration.Initialize();
         
         var metaVerseClient = new MVClient(new TwoDControl());
-        await metaVerseClient.Init(new HomeManifest());
+        await metaVerseClient.Init();
         await metaVerseClient.Start();
     }
 }

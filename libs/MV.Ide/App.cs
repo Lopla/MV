@@ -20,7 +20,7 @@ public static class Clients
     public static async Task Start(IMetaVerse ctx, IManifest manifest)
     {
         var metaVerseClient = new MVClient(ctx);
-        await metaVerseClient.Init(manifest);
+        await metaVerseClient.Init();
         await metaVerseClient.Start();
     }
 }

@@ -1,77 +1,81 @@
 using System;
 using System.Net.Http;
+using System.Security.Cryptography;
 using System.Threading.Tasks;
 using MV.Interfaces;
+using MV.Loader;
 using MV.Models;
 
 namespace MV.Client
 {
     public class MVClient
     {
-        private IMetaVerse metaverse;
-        private IManifest manifest;
-        private IVerse verse;
+        private readonly IMetaVerse metaverse;
+        private IVerse _verse;
 
         public MVClient(IMetaVerse metaVerse)
         {
-            this.metaverse = metaVerse;
+            metaverse = metaVerse;
         }
 
         public async Task Start()
         {
-            await verse.Start();
+            await _verse.Start();
             await metaverse.Start();
         }
 
-        /// <summary>
-        /// Load remote verse and initialized it
-        /// </summary>
-        /// <param name="reference"></param>
-        public Task Init(VerseReference reference = null)
+        public async Task Load(VerseReference reference)
         {
-            if(reference == null)
-            {
-                reference = new VerseReference()
-                {
-                    N='0',
-                    GH= "https://github.com/llaagg/mv-home",
-                    Name = new I18NString("Home world")
-                };
-            }
+            var def = await DownloadDefinition(reference.GH);
 
-            this.Def = await DownloadDefinition(reference.GH).Result;
-
-            
-            this.verse = manifest.Verse();
-
-            await verse.Init(this.metaverse);
-            await metaverse.Init();
-            
-            return Task.CompletedTask;    
+            _verse = def.Verse();
+            await _verse.Init(metaverse);
         }
-        
+
+        public async Task Init()
+        {
+            await metaverse.Init();
+
+            //// load home
+            await Load(new VerseReference
+            {
+                N = '0',
+                GH = "llaagg/mv-home/releases/download/v0.92.1/Home.dll",
+                Name = new I18NString("Home")
+            });
+        }
+
         /// <summary>
-        /// Downloads remote verse definition 
+        ///     Downloads remote verse definition
         /// </summary>
         /// <param name="repo"></param>
         /// <returns></returns>
-        public async Task<VerseDefinition> DownloadDefinition(string repo)
+        public async Task<IManifest> DownloadDefinition(string gitHubAertefactPath)
         {
-            var u = new UriBuilder("https://raw.githubusercontent.com");
-            u.Path+=repo.TrimEnd('/');
-            u.Path+="/verse.json";
-
-            using(HttpClient client = new HttpClient())
+            //var u = new UriBuilder("https://raw.githubusercontent.com");
+            //u.Path += repo.TrimEnd('/');
+            //u.Path += "/verse.json";
+            
+            using (var client = new HttpClient())
             {
+                client.BaseAddress = new Uri("https://github.com");
                 client.DefaultRequestHeaders.Accept.Clear();
                 client.DefaultRequestHeaders.Add("User-Agent", "Revuo home DownloadArtefact");
 
                 //TODO: fix a bug in system console
-                //remove Result
-                var url = u.ToString();
-                return null;
-                //return await client.GetFromJsonAsync<VerseDefinition>(url);
+                
+                var data =  client.GetByteArrayAsync( gitHubAertefactPath).Result;
+
+                return await GetManfiestData(data);
             }
+        }
+
+        private async Task<IManifest> GetManfiestData(byte[] data)
+        {
+            var loader = new Loader.Loader(new CustomDomain());
+            var a = loader.Load<IManifest>(data);
+
+            return a;
         }
     }
 }
