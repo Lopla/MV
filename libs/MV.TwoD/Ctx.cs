@@ -5,23 +5,23 @@ namespace MV.TwoD;
 
 public class Ctx : IContext
 {
-    private IEngine _engine;
+    private IEngine? _engine;
 
-    public Manager manager;
+    public Manager Manager = null!;
     
     public void Init(IEngine engine)
     {
         _engine = engine;
-        manager = new Manager(engine);
+        Manager = new Manager(engine);
     }
 
     public IPainter GetPainter()
     {
-        return manager;
+        return Manager;
     }
 
     public IControl GetControl()
     {
-        return manager;
+        return Manager;
     }
 }

@@ -6,19 +6,22 @@ namespace SDK.Verse;
 
 public class Verse2d : IVerse2d<Skia2dEnviorment>
 {
-    private IMetaVerse _context;
+    private IMetaVerse _context = null!;
 
-    public async Task InitEngine(Skia2dEnviorment env)
+    public Task InitEngine(Skia2dEnviorment env)
     {
+        return Task.CompletedTask;
     }
 
-    public async Task Start()
+    public Task Start()
     {
         _context.Show(new Label("1d 2d who cares"));
+        return Task.CompletedTask;
     }
 
-    public async Task Init(IMetaVerse context)
+    public Task Init(IMetaVerse context)
     {
         _context = context;
+        return Task.CompletedTask;
     }
 }

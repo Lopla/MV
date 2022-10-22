@@ -70,12 +70,12 @@ namespace MV.Client
             }
         }
 
-        private async Task<IManifest> GetManfiestData(byte[] data)
+        private Task<IManifest> GetManfiestData(byte[] data)
         {
             var loader = new Loader.Loader(new CustomDomain());
             var a = loader.Load<IManifest>(data);
 
-            return a;
+            return Task.FromResult(a);
         }
     }
 }

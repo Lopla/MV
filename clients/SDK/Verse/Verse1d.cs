@@ -5,7 +5,7 @@ namespace SDK.Verse
 {
     public class Verse1d : IVerse
     {
-        public async Task Start()
+        public Task Start()
         {
             //1. create UI
             //2. ask to show it
@@ -24,13 +24,17 @@ namespace SDK.Verse
             }
 
             Context.Show(dialer);
+
+            return Task.CompletedTask;
         }
 
-        public async Task Init(IMetaVerse context)
+        public Task Init(IMetaVerse context)
         {
             Context = context;
+
+            return Task.CompletedTask;
         }
 
-        public IMetaVerse Context { get; set; }
+        public IMetaVerse Context { get; set; } = null!;
     }
 }

@@ -12,7 +12,7 @@ namespace MV.TwoD;
 public class TwoDControl : IMetaVerse
 {
     private readonly Ctx _ctx = new();
-    private PlaWindow _window;
+    private PlaWindow _window = null!;
     
     public Task Init()
     {
@@ -24,7 +24,7 @@ public class TwoDControl : IMetaVerse
 
     public void Show(IElement element)
     {
-        Show(element, _ctx.manager);
+        Show(element, _ctx.Manager);
     }
 
     public Task Start()
@@ -37,10 +37,10 @@ public class TwoDControl : IMetaVerse
     {
         if (element is Frame f)
         {
-            IWidgetContainer frame = null;
+            IWidgetContainer frame;
             if (f is VFrame)
                 frame = (IWidgetContainer)container.Add(new Pla.Lib.UI.Widgets.Frame());
-            else if (f is HFrame)
+            else //if (f is HFrame)
                 frame = (IWidgetContainer)container.Add(new Pla.Lib.UI.Widgets.Frame(FrameStyle.Horizontal));
 
             foreach (var e in f.Elements) Show(e.Value, frame);
