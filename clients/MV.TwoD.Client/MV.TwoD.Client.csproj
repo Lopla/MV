@@ -17,8 +17,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Pla.Lib.UI" Version="1.0.8" />
-    <PackageReference Include="Pla.Win" Version="1.0.4" />
+    <PackageReference Include="Pla.Lib.UI" Version="1.0.11" />
+    <PackageReference Include="Pla.Win" Version="1.0.5" />
   </ItemGroup>
 
   <ItemGroup>

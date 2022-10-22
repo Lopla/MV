@@ -10,7 +10,7 @@ public class MVUnityClient : MonoBehaviour
 
         MV3d metaVerse = new MV3d();    
         var c = new MV.Client.MVClient(metaVerse);
-        c.Init(new Home.HomeManifest()).Wait();
+        c.Init().Wait();
         // c.Start().Wait();
     }
 
