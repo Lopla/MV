@@ -1,4 +1,3 @@
-using MV.IDE;
 using MV.OneD.Client.UI;
 using System.CommandLine;
 
@@ -23,14 +22,6 @@ public static class CommandLineApplication
             optionAddress
         };     
         
-        var createVerseCommand = new Command("verse", "Create sample verse file");
-        createVerseCommand.SetHandler(()=>{
-            var c = new Creator();
-            Console.WriteLine(c.DefaultVerse());
-        });
-        var createCommand = new Command("create", "Allows to create some metaverse componenets"){
-            createVerseCommand
-        };
 
         openCommand.SetHandler( async (address)=>{
             var app = new App();            
@@ -39,7 +30,6 @@ public static class CommandLineApplication
 
         var rootCommand = new RootCommand("MV");
         rootCommand.AddCommand(openCommand);
-        rootCommand.AddCommand(createVerseCommand);
         rootCommand.AddCommand(ideCommand);
     
         return await rootCommand.InvokeAsync(args);

@@ -2,9 +2,9 @@
 using SDK.Verse;
 
 
-bool OneDimension = false;
+bool oneDimension = true;
 
-if (OneDimension)
+if (oneDimension)
 {
     await Clients.StartOneD(new VerseManifest());
 }
