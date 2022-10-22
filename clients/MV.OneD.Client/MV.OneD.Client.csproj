@@ -1,7 +1,6 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\mv-home\Home\Home.csproj" />
     <ProjectReference Include="..\..\libs\MV\MV.csproj" />
     <ProjectReference Include="..\..\libs\MV.OneD\MV.OneD.csproj" />
   </ItemGroup>

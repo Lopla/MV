@@ -24,7 +24,7 @@ namespace MV.Client
         }
 
         /// <summary>
-        /// Load remote verse and initilized it
+        /// Load remote verse and initialized it
         /// </summary>
         /// <param name="reference"></param>
         public Task Init(VerseReference reference = null)
@@ -34,31 +34,22 @@ namespace MV.Client
                 reference = new VerseReference()
                 {
                     N='0',
-                    GH="llaagg/mv-home/main/",
+                    GH= "https://github.com/llaagg/mv-home",
                     Name = new I18NString("Home world")
                 };
             }
 
-            //this.Def = DownloadDefinition(reference.GH).Result;
+            this.Def = await DownloadDefinition(reference.GH).Result;
 
-            return Task.CompletedTask;    
-        }
-
-
-        /// <summary>
-        /// Initilize verse from definition
-        /// </summary>
-        /// <param name="definition"></param>
-        /// <returns></returns>
-        public async Task Init(IManifest manifest)
-        {
-            this.manifest = manifest;
+            
             this.verse = manifest.Verse();
 
             await verse.Init(this.metaverse);
             await metaverse.Init();
+            
+            return Task.CompletedTask;    
         }
-
+        
         /// <summary>
         /// Downloads remote verse definition 
         /// </summary>

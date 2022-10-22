@@ -34,6 +34,4 @@ public static class CommandLineApplication
     
         return await rootCommand.InvokeAsync(args);
     }
-
-
 }

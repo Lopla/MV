@@ -10,7 +10,7 @@ public class App
         var metaverseOneDContext = new OneDConsole();
 
         var metaVerseClient = new MVClient(metaverseOneDContext);
-        await metaVerseClient.Init(new HomeManifest());
+        await metaVerseClient.Init();
         await metaVerseClient.Start();
     }
 }

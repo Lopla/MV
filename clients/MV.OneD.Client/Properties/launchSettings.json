@@ -1,0 +1,11 @@
+{
+  "profiles": {
+    "MV.OneD.Client": {
+      "commandName": "Project"
+    },
+    "open": {
+      "commandName": "Project",
+      "commandLineArgs": "open"
+    }
+  }
+}
