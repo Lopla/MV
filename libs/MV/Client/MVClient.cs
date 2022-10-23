@@ -39,6 +39,12 @@ namespace MV.Client
             await _verse.Init(_metaVerse);
         }
 
+        public async Task Load(IManifest reference)
+        {
+            _verse = reference.Verse();
+            await _verse.Init(_metaVerse);
+        }
+
         public async Task Init()
         {
             await _metaVerse.Init();
@@ -120,5 +126,6 @@ namespace MV.Client
         {
             return new Loader.Loader(this._assemblyContext);
         }
+
     }
 }

@@ -7,20 +7,25 @@ namespace MV.IDE;
 
 public static class Clients
 {
-    public static async Task StartOneD(IManifest manifest)
+    public static async Task StartOneD(IManifest? manifest)
     {
         await Start(new OneDConsole(), manifest);
     }
 
-    public static async Task StartTwoD(IManifest manifest)
+    public static async Task StartTwoD(IManifest? manifest)
     {
         await Start(new TwoDControl(), manifest);
     }
 
-    public static async Task Start(IMetaVerse ctx, IManifest manifest)
+    public static async Task Start(IMetaVerse ctx, IManifest? manifest = null)
     {
         var metaVerseClient = new MVClient(ctx, useFilesInsteadOfStream: true);
         await metaVerseClient.Init();
         await metaVerseClient.Start();
+
+        if (manifest != null)
+        {
+            await metaVerseClient.Load(manifest);
+        }
     }
 }

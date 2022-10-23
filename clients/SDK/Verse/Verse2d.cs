@@ -1,16 +1,28 @@
 ﻿using MV.Forms;
 using MV.Interfaces;
 using MV.Skia;
+using SkiaSharp;
 
 namespace SDK.Verse;
 
-public class Verse2d : IVerse2d<Skia2dEnviorment>
+public class Verse2dSkia : IVerse2d<Skia2dEnviorment>
 {
     private IMetaVerse _context = null!;
 
     public Task InitEngine(Skia2dEnviorment env)
     {
+        env.Painter = this.PaintVerse;
+
         return Task.CompletedTask;
+    }
+
+    private void PaintVerse(SKImageInfo imageInfo, SKSurface surface)
+    {
+        using SKPaint paint = new SKPaint()
+        {
+            Color = new SKColor(0,0,0)
+        };
+        surface.Canvas.DrawLine(0,0, 1024,1024, paint);
     }
 
     public Task Start()
