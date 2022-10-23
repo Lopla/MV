@@ -1,7 +1,7 @@
 ﻿using MV.IDE;
 using SDK.Verse;
 
-bool oneDimension = true;
+bool oneDimension = false;
 
 if (oneDimension)
 {

@@ -18,6 +18,6 @@ namespace MV.Interfaces
         /// </summary>
         /// <param name="context">context to which this verse has landed</param>
         /// <returns></returns>
-        Task Init(IMetaVerse context);
+        Task Init(IMetaVerseRunner context);
     }
 }

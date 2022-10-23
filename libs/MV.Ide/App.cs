@@ -17,7 +17,7 @@ public static class Clients
         await Start(new TwoDControl(), manifest);
     }
 
-    public static async Task Start(IMetaVerse ctx, IManifest? manifest = null)
+    public static async Task Start(IMetaVerseRunner ctx, IManifest? manifest = null)
     {
         var metaVerseClient = new MVClient(ctx, useFilesInsteadOfStream: true);
         if (manifest != null)

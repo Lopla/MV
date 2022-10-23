@@ -3,7 +3,7 @@ using Terminal.Gui;
 
 namespace MV.OneD;
 
-public class OneDConsole : IMetaVerse
+public class OneDConsole : IMetaVerseRunner
 {
     private readonly TerminalRender _terminalRender;
 

@@ -28,13 +28,13 @@ namespace SDK.Verse
             return Task.CompletedTask;
         }
 
-        public Task Init(IMetaVerse context)
+        public Task Init(IMetaVerseRunner? context)
         {
             Context = context;
 
             return Task.CompletedTask;
         }
 
-        public IMetaVerse Context { get; set; } = null!;
+        public IMetaVerseRunner? Context { get; set; } = null!;
     }
 }

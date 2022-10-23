@@ -10,16 +10,17 @@ using Label = MV.Forms.Label;
 
 namespace MV.TwoD;
 
-public class TwoDControl : IMetaVerse
+public class TwoDControl : IMetaVerseRunner
 {
     private readonly Ctx _ctx = new();
     private PlaWindow _window = null!;
-    
+    private StartingVerse sw = new StartingVerse();
+
     public Task Init()
     {
         _window = new PlaWindow();
         _window.Init(_ctx);
-
+        
         return Task.CompletedTask;
     }
 
@@ -30,6 +31,8 @@ public class TwoDControl : IMetaVerse
         {
             await s.InitEngine(_ctx.Painter.Environment);
         }
+
+        await verse.Start();
     }
 
     public void Show(IElement element)
@@ -37,10 +40,11 @@ public class TwoDControl : IMetaVerse
         Show(element, _ctx.Manager);
     }
 
-    public Task Start()
+    public async Task Start()
     {
+        await this.InitVerse(sw);
+
         Application.Run(_window);
-        return Task.CompletedTask;
     }
 
     private void Show(IElement element, IWidgetContainer container)

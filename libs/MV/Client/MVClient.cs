@@ -11,11 +11,11 @@ namespace MV.Client
     public class MVClient
     {
         private readonly IAssemblyContext _assemblyContext;
-        private readonly IMetaVerse _metaVerse;
+        private readonly IMetaVerseRunner _metaVerse;
         private readonly bool _useFilesInsteadOfStream;
 
         public MVClient(
-            IMetaVerse metaVerse,
+            IMetaVerseRunner metaVerse,
             IAssemblyContext context = null,
             bool useFilesInsteadOfStream = false)
         {

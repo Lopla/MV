@@ -7,7 +7,7 @@ namespace SDK.Verse;
 
 public class Verse2dSkia : IVerse2d<Skia2dEnviorment>
 {
-    private IMetaVerse _context = null!;
+    private IMetaVerseRunner? _context = null!;
 
     public Task InitEngine(Skia2dEnviorment env)
     {
@@ -31,7 +31,7 @@ public class Verse2dSkia : IVerse2d<Skia2dEnviorment>
         return Task.CompletedTask;
     }
 
-    public Task Init(IMetaVerse context)
+    public Task Init(IMetaVerseRunner? context)
     {
         _context = context;
         return Task.CompletedTask;

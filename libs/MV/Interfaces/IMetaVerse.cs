@@ -2,7 +2,7 @@ using System.Threading.Tasks;
 
 namespace MV.Interfaces
 {
-    public interface IMetaVerse : IMetaVerseContext
+    public interface IMetaVerseRunner : IMetaVerseContext
     {
         /// <summary>
         /// Started only once
