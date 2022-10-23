@@ -15,7 +15,7 @@ namespace MV.TwoD
 
         public Task Start()
         {
-            var b = new Button("ok");
+            var b = new Button("START");
             b.Clicked += () =>
             {
                 Console.WriteLine("a");
