@@ -15,6 +15,7 @@ internal class MV3d : IMetaVerse
 
     public void Show(IElement form)
     {
+        Debug.Log("Request to show: "+ form.ToString());
     }
 
     public async Task Start()
