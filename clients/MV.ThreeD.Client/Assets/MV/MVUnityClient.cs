@@ -8,9 +8,14 @@ public class MVUnityClient : MonoBehaviour
     {        
         Debug.Log("Starting");
 
-        MV3d metaVerse = new MV3d();    
-        var c = new MV.Client.MVClient(metaVerse);
-        c.Init().Wait();
+        System.Reflection.Assembly ass = 
+            System.Reflection.Assembly.LoadFile(@"C:\Users\Gal\AppData\Local\Temp\3cacf86b-8269-41de-b9cf-0774c1bcf082-verse.dll"); 
+
+        Debug.Log(ass.GetName());
+
+        // MV3d metaVerse = new MV3d();    
+        // var c = new MV.Client.MVClient(metaVerse, true);
+        // c.Init().Wait();
         // c.Start().Wait();
     }
 

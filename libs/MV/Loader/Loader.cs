@@ -10,9 +10,9 @@ namespace MV.Loader
 {
     public class Loader
     {
-        private CustomDomain _pluginAssemblyCache;
+        private IAssemblyContext _pluginAssemblyCache;
 
-        public Loader(CustomDomain pluginAssemblyCache)
+        public Loader(IAssemblyContext pluginAssemblyCache)
         {
             _pluginAssemblyCache = pluginAssemblyCache;
         }
@@ -49,17 +49,17 @@ namespace MV.Loader
         [MethodImpl(MethodImplOptions.NoInlining)]
         public Assembly LoadFromBytes(byte[] assemblySource)
         {
-            var assembly = _pluginAssemblyCache.LoadFromStream(new MemoryStream(assemblySource));
+            var assembly = _pluginAssemblyCache.LoadAssemblyFromStream(new MemoryStream(assemblySource));
 
             Trace.WriteLine($"Loader: Loading assembly {assembly.FullName} by demand.");
 
             return assembly;
         }
-
-
-        [MethodImpl(MethodImplOptions.NoInlining)]
+        
         public Assembly LoadFromFile(string path)
         {
+            System.Reflection.Assembly.LoadFile(@"C:\Users\Gal\AppData\Local\Temp\3cacf86b-8269-41de-b9cf-0774c1bcf082-verse.dll");
+
             var assembly = _pluginAssemblyCache.LoadFromAssemblyPath(path);
 
             Trace.WriteLine($"Loader: Loading assembly {assembly.FullName} by demand.");

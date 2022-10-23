@@ -1,12 +1,13 @@
 ﻿using System.Diagnostics;
+using System.IO;
 using System.Reflection;
 using System.Runtime.Loader;
 
 namespace MV.Loader
 {
-    public class CustomDomain : AssemblyLoadContext
+    public class SeparatedDomainContext : AssemblyLoadContext, IAssemblyContext
     {
-        public CustomDomain() : base()
+        public SeparatedDomainContext() : base()
         {
 
         }
@@ -16,6 +17,11 @@ namespace MV.Loader
             //// ignore all deps
             Trace.Write($"Request for {name}");
             return null;
+        }
+
+        public Assembly LoadAssemblyFromStream(MemoryStream memoryStream)
+        {
+            return this.LoadFromStream(memoryStream);
         }
 
         public void Reset()

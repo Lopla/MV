@@ -13,7 +13,7 @@ namespace MV.Loader
 
         public PluginProvider()
         {
-            PluginAssemblyCache = new CustomDomain();
+            PluginAssemblyCache = new SeparatedDomainContext();
 
             Trace.WriteLine($@"Initializing plugin provider {typeof(T)}");
             if (Instance != null) throw new Exception("Not allowed - duplicated plugin provider initialization");
@@ -22,7 +22,7 @@ namespace MV.Loader
 
         public static PluginProvider<T> Instance { get; set; }
 
-        public CustomDomain PluginAssemblyCache { get; protected set; }
+        public SeparatedDomainContext PluginAssemblyCache { get; protected set; }
 
         public Loader GetLoader()
         {
