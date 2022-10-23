@@ -1,6 +1,6 @@
 namespace MV.Interfaces
 {
-    public class I2dEnviorment
+    public interface I2dEnviorment
     {
     }
 }

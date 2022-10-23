@@ -120,6 +120,5 @@ namespace MV.Client
         {
             return new Loader.Loader(this._assemblyContext);
         }
-
     }
 }

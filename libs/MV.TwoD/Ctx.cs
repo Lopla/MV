@@ -17,7 +17,7 @@ public class Ctx : IContext
 
     public IPainter GetPainter()
     {
-        return Manager;
+        return new ExtendedPainter(Manager);
     }
 
     public IControl GetControl()
