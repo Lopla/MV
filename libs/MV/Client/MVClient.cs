@@ -10,10 +10,9 @@ namespace MV.Client
 {
     public class MVClient
     {
+        private readonly IAssemblyContext _assemblyContext;
         private readonly IMetaVerse _metaVerse;
         private readonly bool _useFilesInsteadOfStream;
-        private IVerse _startingVerse;
-        private readonly IAssemblyContext _assemblyContext;
 
         public MVClient(
             IMetaVerse metaVerse,
@@ -27,32 +26,30 @@ namespace MV.Client
 
         public async Task Start()
         {
-            await _startingVerse.Start();
-
             //// endless loop:
             await _metaVerse.Start();
-        }
-
-        public async Task Load(VerseReference reference)
-        {
-            var def = await DownloadDefinition(reference.GH);
-
-            _startingVerse = def.Verse();
-            await _startingVerse.Init(_metaVerse);
-        }
-
-        public async Task Load(IManifest reference)
-        {
-            _startingVerse = reference.Verse();
-            await _startingVerse.Init(_metaVerse);
         }
 
         public async Task Init()
         {
             await _metaVerse.Init();
+        }
 
-            //// load home
-            await Load(new VerseReference
+        public async Task LoadAndInit(VerseReference reference)
+        {
+            var downloadedVerseDefinition = await DownloadDefinition(reference.GH);
+
+            await InitVerse(downloadedVerseDefinition);
+        }
+
+        public async Task LoadAndInit(IManifest reference)
+        {
+            await InitVerse(reference);
+        }
+
+        public async Task LoadDefault()
+        {
+            await LoadAndInit(new VerseReference
             {
                 N = '0',
                 GH = "llaagg/mv-home/releases/download/v0.92.1/Home.dll",
@@ -60,11 +57,17 @@ namespace MV.Client
             });
         }
 
+        private async Task InitVerse(IManifest downloadedVerseDefinition)
+        {
+            var verse = downloadedVerseDefinition.Verse();
+            await _metaVerse.InitVerse(verse);
+        }
+
         /// <summary>
         ///     Downloads remote verse definition
         /// </summary>
         /// <returns></returns>
-        public async Task<IManifest> DownloadDefinition(string gitHubArtifactPath)
+        private async Task<IManifest> DownloadDefinition(string gitHubArtifactPath)
         {
             //var u = new UriBuilder("https://raw.githubusercontent.com");
             //u.Path += repo.TrimEnd('/');
@@ -116,6 +119,7 @@ namespace MV.Client
 
             return Task.FromResult(a);
         }
+
         private Task<IManifest> GetManifestData(string fileName)
         {
             var loader = GetLoader();
@@ -126,8 +130,7 @@ namespace MV.Client
 
         private Loader.Loader GetLoader()
         {
-            return new Loader.Loader(this._assemblyContext);
+            return new Loader.Loader(_assemblyContext);
         }
-
     }
 }

@@ -1,6 +1,7 @@
 ﻿using System.Windows.Forms;
 using MV.Forms;
 using MV.Interfaces;
+using MV.Skia;
 using Pla.Lib.UI.Interfaces;
 using Pla.Win;
 using Button = Pla.Lib.UI.Widgets.Button;
@@ -20,6 +21,15 @@ public class TwoDControl : IMetaVerse
         _window.Init(_ctx);
 
         return Task.CompletedTask;
+    }
+
+    public async Task InitVerse(IVerse verse)
+    {
+        await verse.Init(this);
+        if (verse is IVerse2d<Skia2dEnviorment> s)
+        {
+            await s.InitEngine(_ctx.Painter.Environment);
+        }
     }
 
     public void Show(IElement element)

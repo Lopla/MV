@@ -39,4 +39,9 @@ public class OneDConsole : IMetaVerse
     {
         return Task.CompletedTask;
     }
+
+    public async Task InitVerse(IVerse verse)
+    {
+        await verse.Init(this);
+    }
 }
