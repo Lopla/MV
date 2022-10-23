@@ -1,6 +1,6 @@
 using System;
+using System.IO;
 using System.Net.Http;
-using System.Security.Cryptography;
 using System.Threading.Tasks;
 using MV.Interfaces;
 using MV.Loader;
@@ -10,18 +10,20 @@ namespace MV.Client
 {
     public class MVClient
     {
-        private readonly IMetaVerse metaverse;
+        private readonly IMetaVerse _metaverse;
+        private readonly bool _useFilesInsteadOfStream;
         private IVerse _verse;
-
-        public MVClient(IMetaVerse metaVerse)
+        
+        public MVClient(IMetaVerse metaVerse, bool useFilesInsteadOfStream = false)
         {
-            metaverse = metaVerse;
+            _metaverse = metaVerse;
+            _useFilesInsteadOfStream = useFilesInsteadOfStream;
         }
 
         public async Task Start()
         {
             await _verse.Start();
-            await metaverse.Start();
+            await _metaverse.Start();
         }
 
         public async Task Load(VerseReference reference)
@@ -29,12 +31,12 @@ namespace MV.Client
             var def = await DownloadDefinition(reference.GH);
 
             _verse = def.Verse();
-            await _verse.Init(metaverse);
+            await _verse.Init(_metaverse);
         }
 
         public async Task Init()
         {
-            await metaverse.Init();
+            await _metaverse.Init();
 
             //// load home
             await Load(new VerseReference
@@ -66,14 +68,49 @@ namespace MV.Client
                 
                 var data =  client.GetByteArrayAsync( gitHubAertefactPath).Result;
 
-                return await GetManfiestData(data);
+                if (_useFilesInsteadOfStream)
+                {
+                    var path = SaveVerse(data);
+
+                    return await GetManfiestData(path);
+                }
+                else
+                {
+                    return await GetManfiestData(data);
+                }
             }
+        }
+
+        private string SaveVerse(byte[] bytes, string fileName = null)
+        {
+            var tempPath =
+                System.IO.Path.Combine(
+                    System.IO.Path.GetTempPath(),
+                    fileName ?? Guid.NewGuid()+"-verse.dll");
+
+            
+            using (var bw = new BinaryWriter(File.Create(tempPath)))
+            {
+                bw.Write(bytes);
+                bw.Flush();
+                bw.Close();
+            }
+
+            return tempPath;
         }
 
         private Task<IManifest> GetManfiestData(byte[] data)
         {
             var loader = new Loader.Loader(new CustomDomain());
-            var a = loader.Load<IManifest>(data);
+            var a = loader.LoadFromBytes<IManifest>(data);
+
+            return Task.FromResult(a);
+        }
+
+        private Task<IManifest> GetManfiestData(string fileName)
+        {
+            var loader = new Loader.Loader(new CustomDomain());
+            var a = loader.LoadFromFile<IManifest>(fileName);
 
             return Task.FromResult(a);
         }
