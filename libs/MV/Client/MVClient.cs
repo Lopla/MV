@@ -12,7 +12,7 @@ namespace MV.Client
     {
         private readonly IMetaVerse _metaVerse;
         private readonly bool _useFilesInsteadOfStream;
-        private IVerse _verse;
+        private IVerse _startingVerse;
         private readonly IAssemblyContext _assemblyContext;
 
         public MVClient(
@@ -27,7 +27,9 @@ namespace MV.Client
 
         public async Task Start()
         {
-            await _verse.Start();
+            await _startingVerse.Start();
+
+            //// endless loop:
             await _metaVerse.Start();
         }
 
@@ -35,14 +37,14 @@ namespace MV.Client
         {
             var def = await DownloadDefinition(reference.GH);
 
-            _verse = def.Verse();
-            await _verse.Init(_metaVerse);
+            _startingVerse = def.Verse();
+            await _startingVerse.Init(_metaVerse);
         }
 
         public async Task Load(IManifest reference)
         {
-            _verse = reference.Verse();
-            await _verse.Init(_metaVerse);
+            _startingVerse = reference.Verse();
+            await _startingVerse.Init(_metaVerse);
         }
 
         public async Task Init()
