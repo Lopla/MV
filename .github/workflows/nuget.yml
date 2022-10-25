@@ -8,7 +8,7 @@ on:
     branches: [ main ]
 
 jobs:
-  mv_nugets_matrix
+  mv_nugets_matrix:
     strategy:
       matrix:
         libname: [MV, MV.Ide]
