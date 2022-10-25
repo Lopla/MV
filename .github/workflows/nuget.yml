@@ -11,7 +11,7 @@ jobs:
   mv_nugets_matrix:
     strategy:
       matrix:
-        libname: [MV, MV.Ide]
+        libname: [MV, MV.Skia, MV.Ide]
 
     runs-on: windows-latest
 
