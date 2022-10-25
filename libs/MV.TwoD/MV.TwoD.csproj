@@ -19,6 +19,13 @@
     <TargetFramework>net6.0-windows</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>    
+    
+    <PackageId>MV.TwoD</PackageId>
+		<Version>0.9.6</Version>
+		<Authors>Paweł Gałęzowski</Authors>
+		<Company>lopla</Company>
+		<Description>Package for creating TwoD clients for MV.</Description>
+
   </PropertyGroup>
 
 </Project>
