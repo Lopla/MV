@@ -18,6 +18,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\MV\MV.csproj" />
+    <ProjectReference Include="..\MV.Skia\MV.Skia.csproj" />
     <ProjectReference Include="..\MV.OneD\MV.OneD.csproj" />
     <ProjectReference Include="..\MV.TwoD\MV.TwoD.csproj" />
   </ItemGroup>
