@@ -8,25 +8,28 @@ on:
     branches: [ main ]
 
 jobs:
-  build:
+  mv_nugets_matrix
+    strategy:
+      matrix:
+        libname: [MV, MV.Ide]
 
-    #runs-on: ubuntu-latest
-    runs-on: windows-latest
+    build:
+      runs-on: windows-latest
 
-    steps:
-    - uses: actions/checkout@v2
-    - name: Setup .NET
-      uses: actions/setup-dotnet@v1
-      with:
-        dotnet-version: '6.0.x'
+      steps:
+      - uses: actions/checkout@v2
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: '6.0.x'
 
-    - name: Publish LIB
-      run: dotnet publish libs/MV
- 
-    - name: Lib to NuGet
-      uses: brandedoutcast/publish-nuget@v2
-      continue-on-error: true
-      with:
-        PROJECT_FILE_PATH: libs/MV/MV.csproj
-        NUGET_KEY: ${{secrets.NUGET_API_KEY}}
-    
+      - name: Build MV
+        run: dotnet publish libs/${{ matrix.libname }}
+  
+      - name: Send MV to NuGet
+        uses: brandedoutcast/publish-nuget@v2
+        continue-on-error: true
+        with:
+          PROJECT_FILE_PATH: libs/${{ matrix.libname }}/${{ matrix.libname }}.csproj
+          NUGET_KEY: ${{secrets.NUGET_API_KEY}}
+      
