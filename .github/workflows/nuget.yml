@@ -13,23 +13,22 @@ jobs:
       matrix:
         libname: [MV, MV.Ide]
 
-    build:
-      runs-on: windows-latest
+    runs-on: windows-latest
 
-      steps:
-      - uses: actions/checkout@v2
-      - name: Setup .NET
-        uses: actions/setup-dotnet@v1
-        with:
-          dotnet-version: '6.0.x'
+    steps:
+    - uses: actions/checkout@v2
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: '6.0.x'
 
-      - name: Build MV
-        run: dotnet publish libs/${{ matrix.libname }}
-  
-      - name: Send MV to NuGet
-        uses: brandedoutcast/publish-nuget@v2
-        continue-on-error: true
-        with:
-          PROJECT_FILE_PATH: libs/${{ matrix.libname }}/${{ matrix.libname }}.csproj
-          NUGET_KEY: ${{secrets.NUGET_API_KEY}}
-      
+    - name: Build MV
+      run: dotnet publish libs/${{ matrix.libname }}
+
+    - name: Send MV to NuGet
+      uses: brandedoutcast/publish-nuget@v2
+      continue-on-error: true
+      with:
+        PROJECT_FILE_PATH: libs/${{ matrix.libname }}/${{ matrix.libname }}.csproj
+        NUGET_KEY: ${{secrets.NUGET_API_KEY}}
+    
