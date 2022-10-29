@@ -5,7 +5,14 @@
     <TargetFramework>net6.0-windows</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>    
+ 		<PackageId>MV.Ide</PackageId>
+		<Version>0.9.6</Version>
+		<Authors>Paweł Gałęzowski</Authors>
+		<Company>lopla</Company>
+		<Description>Package to debug packages for mv (used by sdk in base project). Usually you don't need to install this.</Description>
+
   </PropertyGroup>
+
 	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
 		<NoWarn>1701;1702;NU1701</NoWarn>
 	</PropertyGroup>
@@ -18,6 +25,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\MV\MV.csproj" />
+    <ProjectReference Include="..\MV.Skia\MV.Skia.csproj" />
     <ProjectReference Include="..\MV.OneD\MV.OneD.csproj" />
     <ProjectReference Include="..\MV.TwoD\MV.TwoD.csproj" />
   </ItemGroup>
