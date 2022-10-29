@@ -1,0 +1,16 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+	<ItemGroup>
+		<ProjectReference Include="..\..\..\mv\libs\MV.Ide\MV.Ide.csproj" />
+		<ProjectReference Include="..\..\libs\MV.Skia\MV.Skia.csproj" />
+		<ProjectReference Include="..\..\..\mv-home\Home\Home.csproj" />
+	</ItemGroup>
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net6.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+</Project>
