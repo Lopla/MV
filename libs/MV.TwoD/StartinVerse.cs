@@ -6,7 +6,7 @@ namespace MV.TwoD
 {
     internal class StartingVerse : IVerse2d<Skia2dEnviorment>
     {
-        private IMetaVerseRunner? _ctx;
+        private IMetaVerseRunner? _ctx = null!;  
 
         public Task InitEngine(Skia2dEnviorment env)
         {
@@ -18,9 +18,10 @@ namespace MV.TwoD
             var b = new Button("START");
             b.Clicked += () =>
             {
-                Console.WriteLine("a");
+                _ctx!.Show(new Label("hmm"));
             };
-            _ctx.Show(b);
+
+            _ctx!.Show(b);
 
             return Task.CompletedTask;
         }

@@ -68,10 +68,16 @@ public class TwoDControl : IMetaVerseRunner
         }
         else if (element is Forms.Button bt)
         {
-            container.Add(new Button
+            var btn = new Button
             {
-                Text = bt.Text
-            });
+                Text = bt.Text,
+            };
+            btn.ClickedHandler += point =>
+            {
+                bt?.OnClicked();
+            };
+            container.Add(btn);
+            
         }
     }
 }
