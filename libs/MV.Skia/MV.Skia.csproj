@@ -8,7 +8,7 @@
 		<Description>Package to implement 2d verses.</Description>
 	</PropertyGroup>
 	<ItemGroup>
-	  <PackageReference Include="Pla.Lib" Version="1.0.5" />
+	  <PackageReference Include="Pla.Lib" Version="1.0.6" />
 	</ItemGroup>
 	<ItemGroup>
 	  <ProjectReference Include="..\MV\MV.csproj" />

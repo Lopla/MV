@@ -1,5 +1,6 @@
 using Pla.Lib;
 using Pla.Lib.UI;
+using Pla.Lib.UI.DrawingStyles.Ami;
 
 namespace MV.TwoD;
 
@@ -12,7 +13,7 @@ public class Ctx : IContext
     public void Init(IEngine engine)
     {
         _engine = engine;
-        Manager = new Manager(engine);
+        Manager = new Manager(engine, new AmiMagic());
         Painter = new ExtendedPainter(Manager);
     }
 
