@@ -12,7 +12,7 @@ jobs:
     strategy:
       max-parallel: 1
       matrix:
-        libname: [MV, MV.Skia, MV.Ide]
+        libname: [MV, MV.Skia, MV.Ide, MV.OneD, MV.TwoD]
 
     runs-on: windows-latest
 

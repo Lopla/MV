@@ -50,11 +50,11 @@ namespace MV.Client
             await DownloadAndInit(new VerseReference
             {
                 N = '0',
-                GH = "llaagg/mv-home/releases/download/v0.92.1/Home.dll",
+                GH = "llaagg/mv-home/releases/download/v0.92.4/Home.dll",
                 Name = new I18NString("Home")
             });
         }
-
+                               
         private async Task InitVerse(IManifest manifest)
         {
             var verse = manifest.Verse();
@@ -98,8 +98,7 @@ namespace MV.Client
                 Path.Combine(
                     Path.GetTempPath(),
                     fileName ?? Guid.NewGuid() + "-verse.dll");
-
-
+            
             using (var bw = new BinaryWriter(File.Create(tempPath)))
             {
                 bw.Write(bytes);
