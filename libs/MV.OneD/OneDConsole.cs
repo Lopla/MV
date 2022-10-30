@@ -27,6 +27,16 @@ public class OneDConsole : IMetaVerseRunner
         Application.Top.Add(w);
     }
 
+    public void Hide(IElement element)
+    {
+        
+    }
+
+    public void Update(IElement element)
+    {
+        
+    }
+
     public Task Start()
     {
         Application.Run();
