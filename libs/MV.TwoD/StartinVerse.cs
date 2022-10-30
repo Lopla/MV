@@ -8,6 +8,8 @@ namespace MV.TwoD
     {
         private IMetaVerseRunner? _ctx = null!;
         private readonly Label _statusLabel = new ();
+        private readonly VFrame _frame = new VFrame();
+        private bool collapsed = false;
 
         public Task InitEngine(Skia2dEnviorment env)
         {
@@ -16,16 +18,43 @@ namespace MV.TwoD
 
         public Task Start()
         {
-            var frame = new VFrame();
-            frame.Add(new Label("MV:"));
-            frame.Add(AddStartButton());
-            frame.Add(AddExits());
-            frame.Add(_statusLabel);
-            _ctx!.Show(frame);
-            
+            _ctx!.Show(AddHamburgerButton());
+            if (!collapsed)
+            {
+                _frame.Add(new Label("MV:"));
+                _frame.Add(AddStartButton());
+                _frame.Add(AddExits());
+                _frame.Add(_statusLabel);
+                _ctx!.Show(_frame);
+            }
+
             this.Log("Started");
 
             return Task.CompletedTask;
+        }
+
+        private IElement AddHamburgerButton()
+        {
+            var b = new Button()
+            {
+                Text = "="
+            };
+            
+            b.Clicked += () =>
+            {
+                collapsed = !collapsed;
+                if (collapsed)
+                {
+                    this._ctx!.Hide(_frame);
+                }
+                else
+                {
+                    this._ctx.Show(_frame);
+                }
+                
+            };
+
+            return b;
         }
 
         private IElement AddExits()

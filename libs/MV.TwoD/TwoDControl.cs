@@ -40,10 +40,10 @@ public class TwoDControl : IMetaVerseRunner
 
     public void Hide(IElement element)
     {
-        var elmenet = this.FindWidgetByTag(element);
-        if (elmenet != null)
+        var el = this.FindWidgetByTag(element);
+        if (el != null)
         {
-            
+            el.Parent.Remove(el);
         }
     }
 
