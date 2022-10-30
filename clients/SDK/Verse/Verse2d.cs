@@ -27,7 +27,7 @@ public class Verse2dSkia : IVerse2d<Skia2dEnviorment>
 
     public Task Start()
     {
-        _context.Show(new Label("1d 2d who cares"));
+        _context?.Show(new Label("1d 2d who cares"));
         return Task.CompletedTask;
     }
 

@@ -7,5 +7,10 @@
         /// </summary>
         /// <param name="form"></param>
         void Show(IElement form);
+        
+        void Hide(IElement frame);
+
+        void Update(IElement element);
+
     }
 }
