@@ -49,7 +49,7 @@ namespace MV.TwoD
                 }
                 else
                 {
-                    this._ctx.Show(_frame);
+                    this._ctx!.Show(_frame);
                 }
                 
             };
