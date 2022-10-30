@@ -10,6 +10,7 @@ on:
 jobs:
   mv_nugets_matrix:
     strategy:
+      max-parallel: 1
       matrix:
         libname: [MV, MV.Skia, MV.Ide]
 
