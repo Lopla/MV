@@ -12,6 +12,5 @@ namespace MV.Interfaces
         Task Init();
 
         Task InitVerse(IVerse verse);
-       
     }
 }

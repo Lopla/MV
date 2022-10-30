@@ -13,10 +13,10 @@ namespace MV.Interfaces
         Task Start();
 
         /// <summary>
-        /// Started one before <see cref="Start"/> is called. This method allows to setup this verse and
-        /// comunicate with existing context.
+        /// Started once before <see cref="Start"/> is called. This method allows to setup this verse and
+        /// communicate with existing context.
         /// </summary>
-        /// <param name="context">context to which this verse has landed</param>
+        /// <param name="context">context to which this verse has loaded</param>
         /// <returns></returns>
         Task Init(IMetaVerseRunner context);
     }

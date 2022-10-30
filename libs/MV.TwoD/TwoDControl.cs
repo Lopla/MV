@@ -7,15 +7,15 @@ using Pla.Lib.UI.Widgets.Base;
 using Pla.Win;
 using Button = Pla.Lib.UI.Widgets.Button;
 using FrameStyle = Pla.Lib.UI.Widgets.Enums.FrameStyle;
-using Label = MV.Forms.Label;
+using Label = Pla.Lib.UI.Widgets.Label;
 
 namespace MV.TwoD;
 
 public class TwoDControl : IMetaVerseRunner
 {
     private readonly Ctx _ctx = new();
-    private PlaWindow _window = null!;
     private readonly StartingVerse _startingVerse = new();
+    private PlaWindow _window = null!;
 
     public Task Init()
     {
@@ -40,25 +40,37 @@ public class TwoDControl : IMetaVerseRunner
 
     public void Hide(IElement element)
     {
-        var el = this.FindWidgetByTag(element);
-        if (el != null)
-        {
-            el.Parent.Remove(el);
-        }
+        var el = FindWidgetByTag(element);
+        if (el != null) el.Parent.Remove(el);
+    }
+
+    public void Update(IElement element)
+    {
+        var guiWidget = FindWidgetByTag(element);
+        if (guiWidget != null)
+            switch (guiWidget)
+            {
+                case Button b:
+                    b.Text = (element as Forms.Button)?.Text;
+                    break;
+                case Label lb:
+                    lb.Text = (element as Forms.Label)?.Text;
+                    break;
+            }
+    }
+
+    public async Task Start()
+    {
+        Application.Run(_window);
     }
 
     private Widget? FindWidgetByTag(IElement element, IWidgetContainer container = null)
     {
-        if (container == null)
-        {
-            return FindWidgetByTag(element, this._ctx.Manager);
-        }
+        if (container == null) return FindWidgetByTag(element, _ctx.Manager);
 
         if (container is Widget w)
-        {
-            if(w.Tag == element)
+            if (w.Tag == element)
                 return w;
-        }
 
         foreach (var widget in container.Widgets)
         {
@@ -69,39 +81,10 @@ public class TwoDControl : IMetaVerseRunner
                     return foundWidget;
             }
 
-            if (widget.Tag == element)
-            {
-                return widget;
-            }
+            if (widget.Tag == element) return widget;
         }
 
         return null;
-    }
-
-    public void Update(IElement element)
-    {
-        var guiWidget = this.FindWidgetByTag(element);
-        if (guiWidget != null)
-        {
-            switch (guiWidget)
-            {
-                case Button b:
-                    b.Text = (element as MV.Forms.Button)?.Text;
-                    break;
-                case Pla.Lib.UI.Widgets.Label lb:
-                    lb.Text = (element as MV.Forms.Label)?.Text;
-                    break;
-                default:
-                    break;
-            }
-        }
-    }
-
-    public async Task Start()
-    {
-        await InitVerse(_startingVerse);
-
-        Application.Run(_window);
     }
 
     private void Show(IElement element, IWidgetContainer container)
@@ -110,7 +93,7 @@ public class TwoDControl : IMetaVerseRunner
         {
             IWidgetContainer frame;
             if (f is VFrame)
-                frame = (IWidgetContainer)container.Add(new Pla.Lib.UI.Widgets.Frame()
+                frame = (IWidgetContainer)container.Add(new Pla.Lib.UI.Widgets.Frame
                 {
                     Tag = element
                 });
@@ -122,9 +105,9 @@ public class TwoDControl : IMetaVerseRunner
 
             foreach (var e in f.Elements) Show(e.Value, frame);
         }
-        else if (element is Label lb)
+        else if (element is Forms.Label lb)
         {
-            container.Add(new Pla.Lib.UI.Widgets.Label()
+            container.Add(new Label
             {
                 Tag = element,
                 Text = lb.Text

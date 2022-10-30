@@ -6,7 +6,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Pla.Lib.UI" Version="1.0.17" />
+    <PackageReference Include="Pla.Lib.UI" Version="1.0.18" />
     <PackageReference Include="Pla.Win" Version="1.0.6" />
   </ItemGroup>
 	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -21,7 +21,7 @@
     <Nullable>enable</Nullable>    
     
     <PackageId>MV.TwoD</PackageId>
-		<Version>0.9.6</Version>
+		<Version>0.9.7</Version>
 		<Authors>Paweł Gałęzowski</Authors>
 		<Company>lopla</Company>
 		<Description>Package for creating TwoD clients for MV.</Description>

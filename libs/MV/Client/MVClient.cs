@@ -8,6 +8,7 @@ using MV.Models;
 
 namespace MV.Client
 {
+    // ReSharper disable once InconsistentNaming
     public class MVClient
     {
         private readonly IAssemblyContext _assemblyContext;
@@ -33,23 +34,20 @@ namespace MV.Client
         public async Task Init()
         {
             await _metaVerse.Init();
+
+            await LoadDefault();
         }
 
-        public async Task LoadAndInit(VerseReference reference)
+        public async Task DownloadAndInit(VerseReference reference)
         {
             var downloadedVerseDefinition = await DownloadDefinition(reference.GH);
 
             await InitVerse(downloadedVerseDefinition);
         }
 
-        public async Task LoadAndInit(IManifest reference)
-        {
-            await InitVerse(reference);
-        }
-
         public async Task LoadDefault()
         {
-            await LoadAndInit(new VerseReference
+            await DownloadAndInit(new VerseReference
             {
                 N = '0',
                 GH = "llaagg/mv-home/releases/download/v0.92.1/Home.dll",
@@ -57,9 +55,9 @@ namespace MV.Client
             });
         }
 
-        private async Task InitVerse(IManifest downloadedVerseDefinition)
+        private async Task InitVerse(IManifest manifest)
         {
-            var verse = downloadedVerseDefinition.Verse();
+            var verse = manifest.Verse();
             await _metaVerse.InitVerse(verse);
         }
 
@@ -85,7 +83,7 @@ namespace MV.Client
 
                 if (_useFilesInsteadOfStream)
                 {
-                    var path = SaveVerse(data);
+                    var path = SaveVerseDllToFile(data);
 
                     return await GetManifestData(path);
                 }
@@ -94,7 +92,7 @@ namespace MV.Client
             }
         }
 
-        private string SaveVerse(byte[] bytes, string fileName = null)
+        private string SaveVerseDllToFile(byte[] bytes, string fileName = null)
         {
             var tempPath =
                 Path.Combine(
