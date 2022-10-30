@@ -5,12 +5,11 @@
         /// <summary>
         /// Publishes some information to the verse using <see cref="IElement"/> form
         /// </summary>
-        /// <param name="form"></param>
-        void Show(IElement form);
+        void Show(IElement element);
         
-        void Hide(IElement frame);
+        void Hide(IElement element);
 
         void Update(IElement element);
-
     }
+
 }

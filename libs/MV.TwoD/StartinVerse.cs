@@ -7,8 +7,7 @@ namespace MV.TwoD
     internal class StartingVerse : IVerse2d<Skia2dEnviorment>
     {
         private IMetaVerseRunner? _ctx = null!;
-        private readonly HFrame _frame = new HFrame();
-        private readonly Label _statusLabel = new Label();
+        private readonly Label _statusLabel = new ();
 
         public Task InitEngine(Skia2dEnviorment env)
         {
@@ -17,17 +16,22 @@ namespace MV.TwoD
 
         public Task Start()
         {
-            _frame.Add(new Label("MV"));
-            _frame.Add(AddStartButton());
-            _frame.Add(_statusLabel);
-            
-            ////show all entries
-
-            _ctx!.Show(_frame);
+            var frame = new VFrame();
+            frame.Add(new Label("MV:"));
+            frame.Add(AddStartButton());
+            frame.Add(AddExits());
+            frame.Add(_statusLabel);
+            _ctx!.Show(frame);
             
             this.Log("Started");
 
             return Task.CompletedTask;
+        }
+
+        private IElement AddExits()
+        {
+            var frame = new HFrame();
+            return frame;
         }
 
         private void Log(string logLine)

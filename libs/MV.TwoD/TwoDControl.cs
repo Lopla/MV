@@ -64,7 +64,9 @@ public class TwoDControl : IMetaVerseRunner
         {
             if (widget is IWidgetContainer wc)
             {
-                return FindWidgetByTag(element, wc);
+                var foundWidget = FindWidgetByTag(element, wc);
+                if (foundWidget != null)
+                    return foundWidget;
             }
 
             if (widget.Tag == element)

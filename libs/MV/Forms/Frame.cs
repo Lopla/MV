@@ -6,7 +6,7 @@ namespace MV.Forms
 {
     public abstract class Frame : IFrame
     {
-        public Frame()
+        protected Frame()
         {
             Elements = new Dictionary<string, IElement>();
         }
