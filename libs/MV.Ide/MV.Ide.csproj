@@ -6,7 +6,7 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>    
  		<PackageId>MV.Ide</PackageId>
-		<Version>0.9.7</Version>
+		<Version>0.9.8</Version>
 		<Authors>Paweł Gałęzowski</Authors>
 		<Company>lopla</Company>
 		<Description>Package to debug packages for mv (used by sdk in base project). Usually you don't need to install this.</Description>
@@ -20,7 +20,7 @@
 		<NoWarn>1701;1702;NU1701</NoWarn>
 	</PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="Terminal.GUI" Version="1.6.4" />
+    <PackageReference Include="Terminal.GUI" Version="1.8.2" />
   </ItemGroup>
 
   <ItemGroup>

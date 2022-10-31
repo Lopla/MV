@@ -5,7 +5,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Terminal.Gui" Version="1.6.4" />
+    <PackageReference Include="Terminal.Gui" Version="1.8.2" />
   </ItemGroup>
 
   <PropertyGroup>
@@ -14,7 +14,7 @@
     <Nullable>enable</Nullable>
 
     <PackageId>MV.OneD</PackageId>
-		<Version>0.9.7</Version>
+		<Version>0.9.8</Version>
 		<Authors>Paweł Gałęzowski</Authors>
 		<Company>lopla</Company>
 		<Description>Package for creating OneD clients for MV.</Description>
