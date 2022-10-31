@@ -12,14 +12,17 @@ namespace MV.Client
     {
         private readonly DownLoader _downLoader;
         private readonly IMetaVerseRunner _metaVerse;
+        private readonly IManifest _startingMetaVerse;
         private bool _isInitialized;
 
         public MVClient(
             IMetaVerseRunner metaVerse,
             IAssemblyContext context = null,
-            bool useFilesInsteadOfStream = false)
+            bool useFilesInsteadOfStream = false,
+            IManifest startingMetaVerse = null)
         {
             _metaVerse = metaVerse;
+            _startingMetaVerse = startingMetaVerse;
 
             var assemblyContext = context ?? new SeparatedDomainContext();
             _downLoader = new DownLoader(assemblyContext, useFilesInsteadOfStream);
@@ -48,12 +51,19 @@ namespace MV.Client
 
         public async Task LoadDefaultMetaVerse()
         {
-            await DownloadMetaVerse(new VerseReference
+            if (this._startingMetaVerse != null)
             {
-                N = '0',
-                GH = "llaagg/mv-home/releases/download/v0.92.4/Home.dll",
-                Name = new I18NString("Home")
-            });
+                await InitializeMetaVerse(this._startingMetaVerse);
+            }
+            else
+            {
+                await DownloadMetaVerse(new VerseReference
+                {
+                    N = '0',
+                    GH = "llaagg/mv-home/releases/download/v0.92.4/Home.dll",
+                    Name = new I18NString("Home")
+                });
+            }
         }
 
         public async Task InitializeMetaVerse(IManifest manifest)

@@ -21,7 +21,7 @@
     <Nullable>enable</Nullable>    
     
     <PackageId>MV.TwoD</PackageId>
-		<Version>0.9.8</Version>
+		<Version>0.9.9</Version>
 		<Authors>Paweł Gałęzowski</Authors>
 		<Company>lopla</Company>
 		<Description>Package for creating TwoD clients for MV.</Description>

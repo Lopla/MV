@@ -2,7 +2,7 @@
 	<PropertyGroup>
 		<TargetFramework>netstandard2.0</TargetFramework>
 		<PackageId>MV.Skia</PackageId>
-		<Version>0.9.8</Version>
+		<Version>0.9.9</Version>
 		<Authors>Paweł Gałęzowski</Authors>
 		<Company>lopla</Company>
 		<Description>Package to implement 2d verses.</Description>

@@ -6,7 +6,7 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>    
  		<PackageId>MV.Ide</PackageId>
-		<Version>0.9.8</Version>
+		<Version>0.9.9</Version>
 		<Authors>Paweł Gałęzowski</Authors>
 		<Company>lopla</Company>
 		<Description>Package to debug packages for mv (used by sdk in base project). Usually you don't need to install this.</Description>

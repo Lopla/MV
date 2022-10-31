@@ -14,7 +14,7 @@
     <Nullable>enable</Nullable>
 
     <PackageId>MV.OneD</PackageId>
-		<Version>0.9.8</Version>
+		<Version>0.9.9</Version>
 		<Authors>Paweł Gałęzowski</Authors>
 		<Company>lopla</Company>
 		<Description>Package for creating OneD clients for MV.</Description>
