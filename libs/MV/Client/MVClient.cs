@@ -60,7 +60,7 @@ namespace MV.Client
                 await DownloadMetaVerse(new VerseReference
                 {
                     N = '0',
-                    GH = "llaagg/mv-home/releases/download/v0.92.4/Home.dll",
+                    GH = "llaagg/mv-home/releases/download/v0.92.7/Home.dll",
                     Name = new I18NString("Home")
                 });
             }

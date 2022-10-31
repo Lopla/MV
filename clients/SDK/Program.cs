@@ -9,6 +9,6 @@ if (oneDimension)
 }
 else
 {
-    await Clients.StartTwoD(new VerseManifest());
+    await Clients.StartTwoD();
 }
 
