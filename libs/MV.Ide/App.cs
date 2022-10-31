@@ -20,12 +20,12 @@ public static class Clients
     public static async Task Start(IMetaVerseRunner ctx, IManifest? manifest = null)
     {
         var metaVerseClient = new MVClient(ctx, useFilesInsteadOfStream: true);
-        if (manifest != null)
-        {
-            //metaVerseClient.SetStartingVerse(manifest);
-        }
 
         await metaVerseClient.Init();
+        if (manifest != null)
+        {
+            await metaVerseClient.InitializeMetaVerse(manifest);
+        }
         await metaVerseClient.Start();
     }
 }

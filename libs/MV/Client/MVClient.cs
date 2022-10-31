@@ -1,6 +1,4 @@
 using System;
-using System.IO;
-using System.Net.Http;
 using System.Threading.Tasks;
 using MV.Interfaces;
 using MV.Loader;
@@ -9,11 +7,12 @@ using MV.Models;
 namespace MV.Client
 {
     // ReSharper disable once InconsistentNaming
+
     public class MVClient
     {
-        private readonly IAssemblyContext _assemblyContext;
+        private readonly DownLoader _downLoader;
         private readonly IMetaVerseRunner _metaVerse;
-        private readonly bool _useFilesInsteadOfStream;
+        private bool _isInitialized;
 
         public MVClient(
             IMetaVerseRunner metaVerse,
@@ -21,8 +20,9 @@ namespace MV.Client
             bool useFilesInsteadOfStream = false)
         {
             _metaVerse = metaVerse;
-            _useFilesInsteadOfStream = useFilesInsteadOfStream;
-            _assemblyContext = context ?? new SeparatedDomainContext();
+
+            var assemblyContext = context ?? new SeparatedDomainContext();
+            _downLoader = new DownLoader(assemblyContext, useFilesInsteadOfStream);
         }
 
         public async Task Start()
@@ -35,99 +35,34 @@ namespace MV.Client
         {
             await _metaVerse.Init();
 
-            await LoadDefault();
+            _isInitialized = true;
+            await LoadDefaultMetaVerse();
         }
 
-        public async Task DownloadAndInit(VerseReference reference)
+        public async Task DownloadMetaVerse(VerseReference reference)
         {
-            var downloadedVerseDefinition = await DownloadDefinition(reference.GH);
+            var downloadedVerseDefinition = await _downLoader.DownloadDefinition(reference.GH);
 
-            await InitVerse(downloadedVerseDefinition);
+            await InitializeMetaVerse(downloadedVerseDefinition);
         }
 
-        public async Task LoadDefault()
+        public async Task LoadDefaultMetaVerse()
         {
-            await DownloadAndInit(new VerseReference
+            await DownloadMetaVerse(new VerseReference
             {
                 N = '0',
                 GH = "llaagg/mv-home/releases/download/v0.92.4/Home.dll",
                 Name = new I18NString("Home")
             });
         }
-                               
-        private async Task InitVerse(IManifest manifest)
+
+        public async Task InitializeMetaVerse(IManifest manifest)
         {
+            if (!_isInitialized)
+                throw new NotSupportedException("Loading metaverses before init finalized is not available.");
+
             var verse = manifest.Verse();
             await _metaVerse.InitVerse(verse);
-        }
-
-        /// <summary>
-        ///     Downloads remote verse definition
-        /// </summary>
-        /// <returns></returns>
-        private async Task<IManifest> DownloadDefinition(string gitHubArtifactPath)
-        {
-            //var u = new UriBuilder("https://raw.githubusercontent.com");
-            //u.Path += repo.TrimEnd('/');
-            //u.Path += "/verse.json";
-
-            using (var client = new HttpClient())
-            {
-                client.BaseAddress = new Uri("https://github.com");
-                client.DefaultRequestHeaders.Accept.Clear();
-                client.DefaultRequestHeaders.Add("User-Agent", "Revuo home DownloadArtifact");
-
-                //TODO: fix a bug in system console
-
-                var data = client.GetByteArrayAsync(gitHubArtifactPath).Result;
-
-                if (_useFilesInsteadOfStream)
-                {
-                    var path = SaveVerseDllToFile(data);
-
-                    return await GetManifestData(path);
-                }
-
-                return await GetManifestData(data);
-            }
-        }
-
-        private string SaveVerseDllToFile(byte[] bytes, string fileName = null)
-        {
-            var tempPath =
-                Path.Combine(
-                    Path.GetTempPath(),
-                    fileName ?? Guid.NewGuid() + "-verse.dll");
-            
-            using (var bw = new BinaryWriter(File.Create(tempPath)))
-            {
-                bw.Write(bytes);
-                bw.Flush();
-                bw.Close();
-            }
-
-            return tempPath;
-        }
-
-        private Task<IManifest> GetManifestData(byte[] data)
-        {
-            var loader = GetLoader();
-            var a = loader.LoadFromBytes<IManifest>(data);
-
-            return Task.FromResult(a);
-        }
-
-        private Task<IManifest> GetManifestData(string fileName)
-        {
-            var loader = GetLoader();
-            var a = loader.LoadFromFile<IManifest>(fileName);
-
-            return Task.FromResult(a);
-        }
-
-        private Loader.Loader GetLoader()
-        {
-            return new Loader.Loader(_assemblyContext);
         }
     }
 }
