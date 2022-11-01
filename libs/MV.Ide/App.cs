@@ -12,7 +12,8 @@ public static class Clients
         await Start(new OneDConsole(), manifest);
     }
 
-    public static async Task StartTwoD(IManifest? manifest)
+    public static async Task StartTwoD(IManifest? manifest
+        )
     {
         await Start(new TwoDControl(), manifest);
     }
