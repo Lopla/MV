@@ -12,16 +12,15 @@ public static class Clients
         await Start(new OneDConsole(), manifest);
     }
 
-    public static async Task StartTwoD(IManifest? manifest
-        )
+    public static async Task StartTwoD(IManifest? manifest)
     {
         await Start(new TwoDControl(), manifest);
     }
 
     public static async Task Start(IMetaVerseRunner ctx, IManifest? manifest = null)
     {
-        var metaVerseClient = new MVClient(ctx, useFilesInsteadOfStream: true, startingMetaVerse:manifest);
-        
+        var metaVerseClient = new MVClient(ctx, useFilesInsteadOfStream: true, startingMetaVerse: manifest);
+
         await metaVerseClient.Init();
         await metaVerseClient.Start();
     }

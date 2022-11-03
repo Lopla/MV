@@ -1,11 +1,10 @@
 ﻿using MV.IDE;
-using SDK.Verse;
 
-bool oneDimension = false;
+bool oneDimension = true;
 
 if (oneDimension)
 {
-    await Clients.StartOneD(new VerseManifest());
+    await Clients.StartOneD(null);
 }
 else
 {
