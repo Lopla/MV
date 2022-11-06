@@ -15,6 +15,6 @@ internal class VerseManifest : IManifest
 
     public IVerse Verse()
     {
-        return new Verse2dSkia();
+        return new Verse1d();
     }
 }

@@ -1,13 +1,17 @@
 ﻿using MV.IDE;
+using MV.Interfaces;
+using SDK.Verse;
 
-bool oneDimension = true;
+IManifest manifest =
+    null;
+    //new VerseManifest();
 
-if (oneDimension)
+if (true)
 {
-    await Clients.StartOneD(null);
+    await Clients.StartOneD(manifest);
 }
 else
 {
-    await Clients.StartTwoD(null);
+    await Clients.StartTwoD(manifest);
 }
 

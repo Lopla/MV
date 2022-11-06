@@ -53,5 +53,6 @@ public class OneDConsole : IMetaVerseRunner
     public async Task InitVerse(IVerse verse)
     {
         await verse.Init(this);
+        await verse.Start();
     }
 }
