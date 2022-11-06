@@ -3,7 +3,6 @@
 	<ItemGroup>
 		<ProjectReference Include="..\..\..\mv\libs\MV.Ide\MV.Ide.csproj" />
 		<ProjectReference Include="..\..\libs\MV.Skia\MV.Skia.csproj" />
-		<ProjectReference Include="..\..\..\mv-home\Home\Home.csproj" />
 	</ItemGroup>
 
   <PropertyGroup>

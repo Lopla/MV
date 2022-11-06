@@ -6,7 +6,7 @@ IManifest manifest =
     null;
     //new VerseManifest();
 
-if (true)
+if (false)
 {
     await Clients.StartOneD(manifest);
 }

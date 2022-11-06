@@ -22,7 +22,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\mv-home\Home\Home.csproj" />
     <ProjectReference Include="..\..\libs\MV\MV.csproj" />
     <ProjectReference Include="..\..\libs\MV.TwoD\MV.TwoD.csproj" />
   </ItemGroup>
