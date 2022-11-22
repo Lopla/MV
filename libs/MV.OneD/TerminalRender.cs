@@ -26,50 +26,42 @@ public class TerminalRender
 
         return Task.CompletedTask;
     }
-    
-    private (int offsetX, int offsetY) ShowVFrame(
-        View view, (int offsetX, int offsetY) offsets, 
-        VFrame frame, 
-        (int directionx, int directiony) directions)
-    {
-        var fv = new FrameView
-        {
-            Width = Dim.Fill(),
-            Y = offsets.offsetY
-        };
-
-        var sv = new ScrollView();
-
-        var startOffset = (0, 0);
-        foreach (var item in frame.Elements) startOffset = 
-            RenderFrame(fv, item.Value, startOffset, directions);
-
-        offsets.offsetX += startOffset.Item1;
-        offsets.offsetY += startOffset.Item2 + 2;
-
-        fv.Height = startOffset.Item2 + 2;
-
-        fv.Add(sv);
-        view.Add(fv);
-        return offsets;
-    }
-    
+        
     private static (int offsetX, int offsetY) ShowLabel(
         View view, 
         (int offsetX, int offsetY) offsets, 
         Label lb,
         (int directionx, int directiony) directions)
     {
-        var label = new Terminal.Gui.Label
-        {
-            Text = lb.Text.T,
-            Width = Dim.Fill(),
-            Height = 1,
-            Y = offsets.offsetY
-        };
-        offsets.offsetY+= directions.directiony;
-        offsets.offsetX+= directions.directionx;
+        var label = new Terminal.Gui.Label();
+        label.Text = lb.Text.T;
+        var off = CreateElement(label, offsets, directions);
+
         view.Add(label);
+        return offsets;
+    }
+
+    private static (int offsetX, int offsetY)  CreateElement(
+        View lb, 
+        (int offsetX, int offsetY) offsets,
+        (int directionx, int directiony) directions)
+    {
+        var w = directions.directiony == 1 ? Dim.Fill() : 100;
+        var h = directions.directionx == 1 ? Dim.Fill() : 100;
+
+        lb.Y = offsets.offsetY;
+        lb.X = offsets.offsetX;
+        lb.Width = w;
+        lb.Height = h;
+
+        int _w,_h;
+        lb.GetCurrentHeight(out _h);      
+        lb.GetCurrentWidth(out _w);      
+
+
+        offsets.offsetY += _h + directions.directiony;
+        offsets.offsetX += _w + directions.directionx;
+
         return offsets;
     }
 
@@ -79,6 +71,8 @@ public class TerminalRender
         Button bt,
         (int directionx, int directiony) directions)
     {
+        int h=0;
+        int w=0;
         var button = new Terminal.Gui.Button
         {
             Text = bt.Text.T,
@@ -88,7 +82,7 @@ public class TerminalRender
         };
         button.Clicked += () => { bt.OnClicked(); };
 
-        offsets.offsetY+= directions.directiony;
+        offsets.offsetY+= 1 + directions.directiony;
         offsets.offsetX+= directions.directionx;
 
         view.Add(button);
@@ -106,13 +100,12 @@ public class TerminalRender
         {
             case VFrame frame:
                 {
-                    offsets = ShowVFrame(view, offsets, frame, (0,1));
+                    offsets = ShowFrame(view, offsets, frame, directions, (0,1));
                     break;
                 }
             case HFrame frame:
                 {
-                    offsets = ShowHFrame(view, offsets, frame);
-
+                    offsets = ShowFrame(view, offsets, frame, directions, (1,0));
                     break;
                 }
             case Label lb:
@@ -132,19 +125,25 @@ public class TerminalRender
         return offsets;
     }
 
-    private (int offsetX, int offsetY) ShowHFrame(View view, (int offsetX, int offsetY) offsets, HFrame frame)
+    private (int offsetX, int offsetY) ShowFrame(
+        View view, (int offsetX, int offsetY) offsets, 
+        Frame frame,
+        (int directionx, int directiony) directions,
+        (int directionx, int directiony) type)
     {
         var fv = new FrameView
         {
             Width = Dim.Fill(),
-            Y = offsets.offsetY
+            Y = offsets.offsetY,
+            Title= $"Frame {type}"
         };
 
         var startOffset = (0, 0);
-        foreach (var item in frame.Elements) startOffset = RenderFrame(fv, item.Value, startOffset, (1,0));
+        foreach (var item in frame.Elements) startOffset = 
+            RenderFrame(fv, item.Value, startOffset, type);
 
-        offsets.offsetX += startOffset.Item1;
-        offsets.offsetY += startOffset.Item2 + 2;
+        offsets.offsetX += startOffset.Item1 + (2 * directions.directionx);
+        offsets.offsetY += startOffset.Item2 + (2 * directions.directiony);
 
         fv.Height = startOffset.Item2 + 2;
 
