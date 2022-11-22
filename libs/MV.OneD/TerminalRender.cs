@@ -8,23 +8,29 @@ namespace MV.OneD;
 
 public class TerminalRender
 {
+    private Toplevel top;
+
     public TerminalRender()
     {
+        Application.Init();
+        this.top = new Toplevel
+        {
+            IsMdiContainer = true,
+        };        
     }
 
-    public (int offsetX, int offsetY) ShowV(View view, IElement element, (int offsetX, int offsetY) offsets)
+    public Task Start()
     {
-        offsets = RenderFrame(view, element, offsets);
-        return offsets;
-    }
+        Application.Run(top);
+        Application.Shutdown();
 
-    public (int offsetX, int offsetY) ShowH(View view, IElement element, (int offsetX, int offsetY) offsets)
-    {
-        offsets = RenderFrame(view, element, offsets);
-        return offsets;
+        return Task.CompletedTask;
     }
-
-    private (int offsetX, int offsetY) ShowVFrame(View view, (int offsetX, int offsetY) offsets, VFrame frame)
+    
+    private (int offsetX, int offsetY) ShowVFrame(
+        View view, (int offsetX, int offsetY) offsets, 
+        VFrame frame, 
+        (int directionx, int directiony) directions)
     {
         var fv = new FrameView
         {
@@ -32,19 +38,27 @@ public class TerminalRender
             Y = offsets.offsetY
         };
 
+        var sv = new ScrollView();
+
         var startOffset = (0, 0);
-        foreach (var item in frame.Elements) startOffset = ShowV(fv, item.Value, startOffset);
+        foreach (var item in frame.Elements) startOffset = 
+            RenderFrame(fv, item.Value, startOffset, directions);
 
         offsets.offsetX += startOffset.Item1;
         offsets.offsetY += startOffset.Item2 + 2;
 
         fv.Height = startOffset.Item2 + 2;
 
+        fv.Add(sv);
         view.Add(fv);
         return offsets;
     }
     
-    private static (int offsetX, int offsetY) ShowLabel(View view, (int offsetX, int offsetY) offsets, Label lb)
+    private static (int offsetX, int offsetY) ShowLabel(
+        View view, 
+        (int offsetX, int offsetY) offsets, 
+        Label lb,
+        (int directionx, int directiony) directions)
     {
         var label = new Terminal.Gui.Label
         {
@@ -53,35 +67,46 @@ public class TerminalRender
             Height = 1,
             Y = offsets.offsetY
         };
-        offsets.offsetY++;
+        offsets.offsetY+= directions.directiony;
+        offsets.offsetX+= directions.directionx;
         view.Add(label);
         return offsets;
     }
 
-    private static (int offsetX, int offsetY) ShowButton(View view, (int offsetX, int offsetY) offsets, Button bt)
+    private static (int offsetX, int offsetY) ShowButton(
+        View view, 
+        (int offsetX, int offsetY) offsets, 
+        Button bt,
+        (int directionx, int directiony) directions)
     {
-        var label = new Terminal.Gui.Button
+        var button = new Terminal.Gui.Button
         {
             Text = bt.Text.T,
             Width = Dim.Fill(),
             Height = 1,
             Y = offsets.offsetY
         };
-        offsets.offsetY++;
-        label.Clicked += () => { bt.OnClicked(); };
+        button.Clicked += () => { bt.OnClicked(); };
 
-        view.Add(label);
+        offsets.offsetY+= directions.directiony;
+        offsets.offsetX+= directions.directionx;
+
+        view.Add(button);
         return offsets;
     }
 
 
-    private (int offsetX, int offsetY) RenderFrame(View view, IElement element, (int offsetX, int offsetY) offsets)
+    public (int offsetX, int offsetY) RenderFrame(
+        View view, 
+        IElement element, 
+        (int offsetX, int offsetY) offsets, 
+        (int directionx, int directiony) directions)
     {
         switch (element)
         {
             case VFrame frame:
                 {
-                    offsets = ShowVFrame(view, offsets, frame);
+                    offsets = ShowVFrame(view, offsets, frame, (0,1));
                     break;
                 }
             case HFrame frame:
@@ -92,12 +117,12 @@ public class TerminalRender
                 }
             case Label lb:
                 {
-                    offsets = ShowLabel(view, offsets, lb);
+                    offsets = ShowLabel(view, offsets, lb, directions);
                     break;
                 }
             case Button bt:
                 {
-                    offsets = ShowButton(view, offsets, bt);
+                    offsets = ShowButton(view, offsets, bt, directions);
                     break;
                 }
             default:
@@ -116,7 +141,7 @@ public class TerminalRender
         };
 
         var startOffset = (0, 0);
-        foreach (var item in frame.Elements) startOffset = ShowH(fv, item.Value, startOffset);
+        foreach (var item in frame.Elements) startOffset = RenderFrame(fv, item.Value, startOffset, (1,0));
 
         offsets.offsetX += startOffset.Item1;
         offsets.offsetY += startOffset.Item2 + 2;
@@ -125,5 +150,28 @@ public class TerminalRender
 
         view.Add(fv);
         return offsets;
+    }
+
+    internal void Show(IElement element)
+    {
+        
+        // it always starts with the window
+        var w = new Window
+        {
+            Width = Dim.Percent(75),
+            Height = Dim.Percent(75),
+            Border = new Border()
+            {
+               BorderStyle = BorderStyle.Rounded,
+            },
+        };
+
+        w.Enter += (a)=>{
+            this.top.BringSubviewToFront(w);
+        };
+
+        RenderFrame(w, element, (0, 0), (0 ,0));
+        
+        this.top.Add(w);
     }
 }

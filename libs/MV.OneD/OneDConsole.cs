@@ -9,22 +9,13 @@ public class OneDConsole : IMetaVerseRunner
 
     public OneDConsole()
     {
-        Application.Init();
+        
         _terminalRender = new TerminalRender();
     }
 
     public void Show(IElement element)
     {
-        // it always starts with the window
-        var w = new Window
-        {
-            Width = Dim.Percent(50),
-            Height = Dim.Percent(50)
-        };
-
-        _terminalRender.ShowV(w, element, (0, 0));
-
-        Application.Top.Add(w);
+        _terminalRender.Show(element);
     }
 
     public void Hide(IElement element)
@@ -37,12 +28,9 @@ public class OneDConsole : IMetaVerseRunner
         
     }
 
-    public Task Start()
+    public async Task Start()
     {
-        Application.Run();
-        Application.Shutdown();
-
-        return Task.CompletedTask;
+        await _terminalRender.Start();
     }
 
     public Task Init()

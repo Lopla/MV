@@ -8,7 +8,7 @@
             "name": "Two dimensions (Win)",
             "type": "coreclr",
             "request": "launch",
-            "preLaunchTask": "build",
+            "preLaunchTask": "build-twod",
             // If you have changed target frameworks, make sure to update the program path.
             "program": "${workspaceFolder}/clients/MV.TwoD.Client/bin/Debug/net6.0-windows/MV.TwoD.Client.dll",
             "args": [],
