@@ -14,76 +14,92 @@ public class TerminalRender
 
     public (int offsetX, int offsetY) ShowV(View view, IElement element, (int offsetX, int offsetY) offsets)
     {
+        offsets = RenderFrame(view, element, offsets);
+        return offsets;
+    }
+
+    public (int offsetX, int offsetY) ShowH(View view, IElement element, (int offsetX, int offsetY) offsets)
+    {
+        offsets = RenderFrame(view, element, offsets);
+        return offsets;
+    }
+
+    private (int offsetX, int offsetY) ShowVFrame(View view, (int offsetX, int offsetY) offsets, VFrame frame)
+    {
+        var fv = new FrameView
+        {
+            Width = Dim.Fill(),
+            Y = offsets.offsetY
+        };
+
+        var startOffset = (0, 0);
+        foreach (var item in frame.Elements) startOffset = ShowV(fv, item.Value, startOffset);
+
+        offsets.offsetX += startOffset.Item1;
+        offsets.offsetY += startOffset.Item2 + 2;
+
+        fv.Height = startOffset.Item2 + 2;
+
+        view.Add(fv);
+        return offsets;
+    }
+    
+    private static (int offsetX, int offsetY) ShowLabel(View view, (int offsetX, int offsetY) offsets, Label lb)
+    {
+        var label = new Terminal.Gui.Label
+        {
+            Text = lb.Text.T,
+            Width = Dim.Fill(),
+            Height = 1,
+            Y = offsets.offsetY
+        };
+        offsets.offsetY++;
+        view.Add(label);
+        return offsets;
+    }
+
+    private static (int offsetX, int offsetY) ShowButton(View view, (int offsetX, int offsetY) offsets, Button bt)
+    {
+        var label = new Terminal.Gui.Button
+        {
+            Text = bt.Text.T,
+            Width = Dim.Fill(),
+            Height = 1,
+            Y = offsets.offsetY
+        };
+        offsets.offsetY++;
+        label.Clicked += () => { bt.OnClicked(); };
+
+        view.Add(label);
+        return offsets;
+    }
+
+
+    private (int offsetX, int offsetY) RenderFrame(View view, IElement element, (int offsetX, int offsetY) offsets)
+    {
         switch (element)
         {
             case VFrame frame:
-            {
-                var fv = new FrameView
                 {
-                    Width = Dim.Fill(),
-                    Y = offsets.offsetY
-                };
-
-                var startOffset = (0, 0);
-                foreach (var item in frame.Elements) startOffset = ShowV(fv, item.Value, startOffset);
-
-                offsets.offsetX += startOffset.Item1;
-                offsets.offsetY += startOffset.Item2 + 2;
-
-                fv.Height = startOffset.Item2 + 2;
-
-                view.Add(fv);
-
-                break;
-            }
+                    offsets = ShowVFrame(view, offsets, frame);
+                    break;
+                }
             case HFrame frame:
-            {
-                var fv = new FrameView
                 {
-                    Width = Dim.Fill(),
-                    Y = offsets.offsetY
-                };
+                    offsets = ShowHFrame(view, offsets, frame);
 
-                var startOffset = (0, 0);
-                foreach (var item in frame.Elements) startOffset = ShowH(fv, item.Value, startOffset);
-
-                offsets.offsetX += startOffset.Item1;
-                offsets.offsetY += startOffset.Item2 + 2;
-
-                fv.Height = startOffset.Item2 + 2;
-
-                view.Add(fv);
-
-                break;
-            }
+                    break;
+                }
             case Label lb:
-            {
-                var label = new Terminal.Gui.Label
                 {
-                    Text = lb.Text.T,
-                    Width = Dim.Fill(),
-                    Height = 1,
-                    Y = offsets.offsetY
-                };
-                offsets.offsetY++;
-                view.Add(label);
-                break;
-            }
+                    offsets = ShowLabel(view, offsets, lb);
+                    break;
+                }
             case Button bt:
-            {
-                var label = new Terminal.Gui.Button
                 {
-                    Text = bt.Text.T,
-                    Width = Dim.Fill(),
-                    Height = 1,
-                    Y = offsets.offsetY
-                };
-                offsets.offsetY++;
-                label.Clicked += () => { bt.OnClicked(); };
-
-                view.Add(label);
-                break;
-            }
+                    offsets = ShowButton(view, offsets, bt);
+                    break;
+                }
             default:
                 throw new NotImplementedException($"Not supported gui element: {element.GetType()}");
         }
@@ -91,82 +107,23 @@ public class TerminalRender
         return offsets;
     }
 
-    public (int offsetX, int offsetY) ShowH(View view, IElement element, (int offsetX, int offsetY) offsets)
+    private (int offsetX, int offsetY) ShowHFrame(View view, (int offsetX, int offsetY) offsets, HFrame frame)
     {
-        switch (element)
+        var fv = new FrameView
         {
-            case VFrame frame:
-            {
-                var fv = new FrameView
-                {
-                    Width = Dim.Fill(),
-                    Y = offsets.offsetY
-                };
+            Width = Dim.Fill(),
+            Y = offsets.offsetY
+        };
 
-                var startOffset = (0, 0);
-                foreach (var item in frame.Elements) startOffset = ShowV(fv, item.Value, startOffset);
+        var startOffset = (0, 0);
+        foreach (var item in frame.Elements) startOffset = ShowH(fv, item.Value, startOffset);
 
-                offsets.offsetX += startOffset.Item1;
-                offsets.offsetY += startOffset.Item2 + 2;
+        offsets.offsetX += startOffset.Item1;
+        offsets.offsetY += startOffset.Item2 + 2;
 
-                fv.Height = startOffset.Item2 + 2;
+        fv.Height = startOffset.Item2 + 2;
 
-                view.Add(fv);
-
-                break;
-            }
-            case HFrame frame:
-            {
-                var fv = new FrameView
-                {
-                    Width = Dim.Fill(),
-                    Y = offsets.offsetY
-                };
-
-                var startOffset = (0, 0);
-                foreach (var item in frame.Elements) startOffset = ShowH(fv, item.Value, startOffset);
-
-                offsets.offsetX += startOffset.Item1;
-                offsets.offsetY += startOffset.Item2 + 2;
-
-                fv.Height = startOffset.Item2 + 2;
-
-                view.Add(fv);
-
-                break;
-            }
-            case Label lb:
-            {
-                var label = new Terminal.Gui.Label
-                {
-                    Text = lb.Text.T,
-                    Width = Dim.Fill(),
-                    Height = 1,
-                    Y = offsets.offsetY
-                };
-                offsets.offsetY++;
-                view.Add(label);
-                break;
-            }
-            case Button bt:
-            {
-                var label = new Terminal.Gui.Button
-                {
-                    Text = bt.Text.T,
-                    Width = Dim.Fill(),
-                    Height = 1,
-                    Y = offsets.offsetY
-                };
-                offsets.offsetY++;
-                label.Clicked += () => { bt.OnClicked(); };
-
-                view.Add(label);
-                break;
-            }
-            default:
-                throw new NotImplementedException($"Not supported gui element: {element.GetType()}");
-        }
-
+        view.Add(fv);
         return offsets;
     }
 }
