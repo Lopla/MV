@@ -8,6 +8,8 @@ namespace MV.OneD;
 
 public class TerminalRender
 {
+    public enum Direction{TopBottom, ToRight};
+
     private Toplevel top;
 
     public TerminalRender()
@@ -26,132 +28,8 @@ public class TerminalRender
 
         return Task.CompletedTask;
     }
-        
-    private static (int offsetX, int offsetY) ShowLabel(
-        View view, 
-        (int offsetX, int offsetY) offsets, 
-        Label lb,
-        (int directionx, int directiony) directions)
-    {
-        var label = new Terminal.Gui.Label();
-        label.Text = lb.Text.T;
-        var off = CreateElement(label, offsets, directions);
-
-        view.Add(label);
-        return offsets;
-    }
-
-    private static (int offsetX, int offsetY)  CreateElement(
-        View lb, 
-        (int offsetX, int offsetY) offsets,
-        (int directionx, int directiony) directions)
-    {
-        var w = directions.directiony == 1 ? Dim.Fill() : 100;
-        var h = directions.directionx == 1 ? Dim.Fill() : 100;
-
-        lb.Y = offsets.offsetY;
-        lb.X = offsets.offsetX;
-        lb.Width = w;
-        lb.Height = h;
-
-        int _w,_h;
-        lb.GetCurrentHeight(out _h);      
-        lb.GetCurrentWidth(out _w);      
-
-
-        offsets.offsetY += _h + directions.directiony;
-        offsets.offsetX += _w + directions.directionx;
-
-        return offsets;
-    }
-
-    private static (int offsetX, int offsetY) ShowButton(
-        View view, 
-        (int offsetX, int offsetY) offsets, 
-        Button bt,
-        (int directionx, int directiony) directions)
-    {
-        int h=0;
-        int w=0;
-        var button = new Terminal.Gui.Button
-        {
-            Text = bt.Text.T,
-            Width = Dim.Fill(),
-            Height = 1,
-            Y = offsets.offsetY
-        };
-        button.Clicked += () => { bt.OnClicked(); };
-
-        offsets.offsetY+= 1 + directions.directiony;
-        offsets.offsetX+= directions.directionx;
-
-        view.Add(button);
-        return offsets;
-    }
-
-
-    public (int offsetX, int offsetY) RenderFrame(
-        View view, 
-        IElement element, 
-        (int offsetX, int offsetY) offsets, 
-        (int directionx, int directiony) directions)
-    {
-        switch (element)
-        {
-            case VFrame frame:
-                {
-                    offsets = ShowFrame(view, offsets, frame, directions, (0,1));
-                    break;
-                }
-            case HFrame frame:
-                {
-                    offsets = ShowFrame(view, offsets, frame, directions, (1,0));
-                    break;
-                }
-            case Label lb:
-                {
-                    offsets = ShowLabel(view, offsets, lb, directions);
-                    break;
-                }
-            case Button bt:
-                {
-                    offsets = ShowButton(view, offsets, bt, directions);
-                    break;
-                }
-            default:
-                throw new NotImplementedException($"Not supported gui element: {element.GetType()}");
-        }
-
-        return offsets;
-    }
-
-    private (int offsetX, int offsetY) ShowFrame(
-        View view, (int offsetX, int offsetY) offsets, 
-        Frame frame,
-        (int directionx, int directiony) directions,
-        (int directionx, int directiony) type)
-    {
-        var fv = new FrameView
-        {
-            Width = Dim.Fill(),
-            Y = offsets.offsetY,
-            Title= $"Frame {type}"
-        };
-
-        var startOffset = (0, 0);
-        foreach (var item in frame.Elements) startOffset = 
-            RenderFrame(fv, item.Value, startOffset, type);
-
-        offsets.offsetX += startOffset.Item1 + (2 * directions.directionx);
-        offsets.offsetY += startOffset.Item2 + (2 * directions.directiony);
-
-        fv.Height = startOffset.Item2 + 2;
-
-        view.Add(fv);
-        return offsets;
-    }
-
-    internal void Show(IElement element)
+    
+    public void Show(IElement element)
     {
         
         // it always starts with the window
@@ -169,8 +47,146 @@ public class TerminalRender
             this.top.BringSubviewToFront(w);
         };
 
-        RenderFrame(w, element, (0, 0), (0 ,0));
+        RenderFrame(w, element, (0, 0), Direction.TopBottom);
         
         this.top.Add(w);
+    }
+    
+    private static (int offsetX, int offsetY) SetSize(
+        View viewElement, 
+        (int offsetX, int offsetY) offsets,
+        Direction direction,
+        (int w, int h) ?defaultSize = null)
+    {
+        defaultSize = defaultSize == null ? (10, 1) : defaultSize;
+
+        var w = direction == Direction.TopBottom ? Dim.Fill() : defaultSize.Value.w;
+        var h = direction == Direction.ToRight ? Dim.Fill() : defaultSize.Value.h;
+
+        viewElement.Y = offsets.offsetY;
+        viewElement.X = offsets.offsetX;
+        viewElement.Width = w;
+        viewElement.Height = h;
+
+        int _w,_h;
+        viewElement.GetCurrentHeight(out _h);      
+        viewElement.GetCurrentWidth(out _w);      
+
+        offsets.offsetY += _h ;
+        offsets.offsetX += _w ;
+
+        return offsets;
+    }
+
+    public (int offsetX, int offsetY) RenderFrame(
+        View view, 
+        IElement element, 
+        (int offsetX, int offsetY) offsets, 
+        Direction direction)
+    {
+        switch (element)
+        {
+            case VFrame frame:
+                {
+                    offsets = ShowFrame(view, offsets, frame, direction, Direction.TopBottom);
+                    break;
+                }
+            case HFrame frame:
+                {
+                    offsets = ShowFrame(view, offsets, frame, direction, Direction.ToRight);
+                    break;
+                }
+            case Label lb:
+                {
+                    offsets = ShowLabel(view, offsets, lb, direction);
+                    break;
+                }
+            case Button bt:
+                {
+                    offsets = ShowButton(view, offsets, bt, direction);
+                    break;
+                }
+            default:
+                throw new NotImplementedException($"Not supported gui element: {element.GetType()}");
+        }
+
+        return offsets;
+    }
+
+    private (int offsetX, int offsetY) ShowFrame(
+        View view, 
+        (int offsetX, int offsetY) offsets, 
+        Frame frame,
+        Direction direction,
+        Direction newDirection)
+    {
+        var fv = new FrameView();
+        offsets = SetSize(fv, offsets, direction, (10,2));
+
+        var startOffset = (0, 0);
+        var maxHeight = 1;
+        foreach (var item in frame.Elements) {
+            startOffset = RenderFrame(fv, item.Value, startOffset, newDirection);
+
+            if(newDirection == Direction.TopBottom)
+            {
+                startOffset = (offsets.offsetX, startOffset.Item2);
+            }else if(newDirection == Direction.ToRight)
+            {
+                maxHeight = maxHeight < startOffset.Item2 ? startOffset.Item2 : maxHeight;
+                startOffset = (startOffset.Item1, offsets.offsetY);
+            }
+        }
+
+        startOffset.Item2 = maxHeight;
+    
+
+        if(newDirection == Direction.TopBottom)
+        {
+            fv.Height = startOffset.Item2 + 2;
+        }
+        if(newDirection == Direction.ToRight)
+        {
+            fv.Height = maxHeight+2;
+        }
+
+        view.Add(fv);
+        return startOffset;
+    }
+
+    private static (int offsetX, int offsetY) ShowLabel(
+        View view, 
+        (int offsetX, int offsetY) offsets, 
+        Label lb,
+        Direction direction)
+    {
+        var label = new Terminal.Gui.Label()
+        {
+            Text = lb.Text.T,
+            TextAlignment = TextAlignment.Centered
+        };
+        var o = SetSize(label, offsets, direction, ( lb.Text.T.Length +2 ,1 ));
+
+        view.Add(label);
+
+        return o;
+    }
+
+    private static (int offsetX, int offsetY) ShowButton(
+        View view, 
+        (int offsetX, int offsetY) offsets, 
+        Button bt,
+        Direction direction)
+    {
+        var button = new Terminal.Gui.Button
+        {
+            Text = bt.Text.T,
+        };
+        button.Clicked += () => { bt.OnClicked(); };
+
+        var o = SetSize(button, offsets, direction,( bt.Text.T.Length +2 ,1 ));
+        view.Add(button);
+
+        return o;
     }
 }
