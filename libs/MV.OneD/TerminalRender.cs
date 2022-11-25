@@ -138,8 +138,7 @@ public class TerminalRender
             }
         }
 
-        startOffset.Item2 = maxHeight;
-    
+        startOffset.Item2 = maxHeight;    
 
         if(newDirection == Direction.TopBottom)
         {
