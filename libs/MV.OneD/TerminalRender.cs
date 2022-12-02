@@ -1,4 +1,5 @@
-﻿using MV.Forms;
+﻿using System.Diagnostics;
+using MV.Forms;
 using MV.Interfaces;
 using Terminal.Gui;
 using Button = MV.Forms.Button;
@@ -8,57 +9,58 @@ namespace MV.OneD;
 
 public class TerminalRender
 {
-    public enum Direction{TopBottom, ToRight};
+    public enum Direction
+    {
+        TopBottom,
+        ToRight
+    }
 
-    private Toplevel top;
+    private readonly Toplevel _top;
 
     public TerminalRender()
     {
         Application.Init();
-        this.top = new Toplevel
+        _top = new Toplevel
         {
-            IsMdiContainer = true,
-        };        
+            IsMdiContainer = true
+        };
     }
 
     public Task Start()
     {
-        Application.Run(top);
+        Application.Run(_top);
         Application.Shutdown();
 
         return Task.CompletedTask;
     }
-    
+
     public void Show(IElement element)
     {
-        
         // it always starts with the window
         var w = new Window
         {
             Width = Dim.Percent(75),
             Height = Dim.Percent(75),
-            Border = new Border()
+            Border = new Border
             {
-               BorderStyle = BorderStyle.Rounded,
-            },
+                BorderStyle = BorderStyle.Rounded
+            }
         };
 
-        w.Enter += (a)=>{
-            this.top.BringSubviewToFront(w);
-        };
+        w.Enter += a => { _top.BringSubviewToFront(w); };
 
         RenderFrame(w, element, (0, 0), Direction.TopBottom);
-        
-        this.top.Add(w);
+
+        _top.Add(w);
     }
-    
-    private static (int offsetX, int offsetY) SetSize(
-        View viewElement, 
+
+    private static (int offsetX, int offsetY) CalculateSize(
+        View viewElement,
         (int offsetX, int offsetY) offsets,
         Direction direction,
-        (int w, int h) ?defaultSize = null)
+        (int w, int h)? defaultSize = null)
     {
-        defaultSize = defaultSize == null ? (10, 1) : defaultSize;
+        defaultSize = defaultSize ?? (10, 1);
 
         var w = direction == Direction.TopBottom ? Dim.Fill() : defaultSize.Value.w;
         var h = direction == Direction.ToRight ? Dim.Fill() : defaultSize.Value.h;
@@ -68,44 +70,45 @@ public class TerminalRender
         viewElement.Width = w;
         viewElement.Height = h;
 
-        int _w,_h;
-        viewElement.GetCurrentHeight(out _h);      
-        viewElement.GetCurrentWidth(out _w);      
+        int _w, _h;
 
-        offsets.offsetY += _h ;
-        offsets.offsetX += _w ;
+        viewElement.GetCurrentHeight(out _h);
+        viewElement.GetCurrentWidth(out _w);
+
+        offsets.offsetY += _h;
+        offsets.offsetX += _w;
 
         return offsets;
     }
 
     public (int offsetX, int offsetY) RenderFrame(
-        View view, 
-        IElement element, 
-        (int offsetX, int offsetY) offsets, 
+        View view,
+        IElement element,
+        (int offsetX, int offsetY) offsets,
         Direction direction)
     {
         switch (element)
         {
             case VFrame frame:
-                {
-                    offsets = ShowFrame(view, offsets, frame, direction, Direction.TopBottom);
-                    break;
-                }
+            {
+                offsets = ShowFrame(view, offsets, frame, direction, Direction.TopBottom);
+                break;
+            }
             case HFrame frame:
-                {
-                    offsets = ShowFrame(view, offsets, frame, direction, Direction.ToRight);
-                    break;
-                }
+            {
+                offsets = ShowFrame(view, offsets, frame, direction, Direction.ToRight);
+                break;
+            }
             case Label lb:
-                {
-                    offsets = ShowLabel(view, offsets, lb, direction);
-                    break;
-                }
+            {
+                offsets = ShowLabel(view, offsets, lb, direction);
+                break;
+            }
             case Button bt:
-                {
-                    offsets = ShowButton(view, offsets, bt, direction);
-                    break;
-                }
+            {
+                offsets = ShowButton(view, offsets, bt, direction);
+                break;
+            }
             default:
                 throw new NotImplementedException($"Not supported gui element: {element.GetType()}");
         }
@@ -114,57 +117,73 @@ public class TerminalRender
     }
 
     private (int offsetX, int offsetY) ShowFrame(
-        View view, 
-        (int offsetX, int offsetY) offsets, 
+        View view,
+        (int offsetX, int offsetY) offsets,
         Frame frame,
-        Direction direction,
-        Direction newDirection)
+        Direction parentDirection,
+        Direction frameDirection)
     {
         var fv = new FrameView();
-        offsets = SetSize(fv, offsets, direction, (10,2));
+        var o = CalculateSize(fv, offsets, parentDirection, (10, 2));
 
-        var startOffset = (0, 0);
-        var maxHeight = 1;
-        foreach (var item in frame.Elements) {
-            startOffset = RenderFrame(fv, item.Value, startOffset, newDirection);
+        var startOffset = offsets;
+        
+        startOffset = 
+            RenderElements(offsets, frame, frameDirection, startOffset, fv);
 
-            if(newDirection == Direction.TopBottom)
-            {
-                startOffset = (offsets.offsetX, startOffset.Item2);
-            }else if(newDirection == Direction.ToRight)
-            {
-                maxHeight = maxHeight < startOffset.Item2 ? startOffset.Item2 : maxHeight;
-                startOffset = (startOffset.Item1, offsets.offsetY);
-            }
-        }
+        o.offsetY = startOffset.offsetY + offsets.offsetY +2;
+        o.offsetX = startOffset.offsetX + offsets.offsetX +2;
 
-        startOffset.Item2 = maxHeight + 2;    
-
-        if(newDirection == Direction.TopBottom)
-        {
-            fv.Height = startOffset.Item2 + 2;
-        }
-        if(newDirection == Direction.ToRight)
-        {
-            fv.Height = maxHeight + 2;
-        }
+        fv.Height = o.offsetY;
 
         view.Add(fv);
-        return startOffset;
+
+        Debug.WriteLine($"{view.ToString()} {o}");
+
+        return o;
+    }
+
+    private (int offsetX, int offsetY) RenderElements((int offsetX, int offsetY) offsets, Frame frame,
+        Direction frameDirection, (int offsetX, int offsetY) startOffset, FrameView fv)
+    {
+        int maxHeight = 1, maxWidth = 1;
+        var so = startOffset;
+        foreach (var item in frame.Elements)
+        {
+            var newSize = RenderFrame(fv, item.Value, so, frameDirection);
+            Debug.WriteLine($"Added {item.Value} {startOffset}");
+
+            maxHeight = maxHeight < newSize.offsetY ? newSize.offsetY : maxHeight;
+            maxWidth = maxWidth < newSize.offsetX ? newSize.offsetX : maxWidth;
+
+            if (frameDirection == Direction.TopBottom)
+            {
+                so = (offsets.offsetX, newSize.offsetY);
+            }
+            else if (frameDirection == Direction.ToRight)
+            {
+                so = (newSize.offsetX, offsets.offsetY);
+            }
+
+        }
+
+        var r = (maxWidth, maxHeight);
+        Debug.WriteLine($"frame size {r}");
+        return r;
     }
 
     private static (int offsetX, int offsetY) ShowLabel(
-        View view, 
-        (int offsetX, int offsetY) offsets, 
+        View view,
+        (int offsetX, int offsetY) offsets,
         Label lb,
         Direction direction)
     {
-        var label = new Terminal.Gui.Label()
+        var label = new Terminal.Gui.Label
         {
             Text = lb.Text.T,
             TextAlignment = TextAlignment.Centered
         };
-        var o = SetSize(label, offsets, direction, ( lb.Text.T.Length +2 ,1 ));
+        var o = CalculateSize(label, offsets, direction, (lb.Text.T.Length + 2, 1));
 
         view.Add(label);
 
@@ -172,18 +191,18 @@ public class TerminalRender
     }
 
     private static (int offsetX, int offsetY) ShowButton(
-        View view, 
-        (int offsetX, int offsetY) offsets, 
+        View view,
+        (int offsetX, int offsetY) offsets,
         Button bt,
         Direction direction)
     {
         var button = new Terminal.Gui.Button
         {
-            Text = bt.Text.T,
+            Text = bt.Text.T
         };
         button.Clicked += () => { bt.OnClicked(); };
 
-        var o = SetSize(button, offsets, direction,( bt.Text.T.Length +2 ,1 ));
+        var o = CalculateSize(button, offsets, direction, (bt.Text.T.Length + 2, 1));
         view.Add(button);
 
         return o;
