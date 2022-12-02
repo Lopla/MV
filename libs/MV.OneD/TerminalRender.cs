@@ -138,7 +138,7 @@ public class TerminalRender
             }
         }
 
-        startOffset.Item2 = maxHeight;    
+        startOffset.Item2 = maxHeight + 2;    
 
         if(newDirection == Direction.TopBottom)
         {
@@ -146,7 +146,7 @@ public class TerminalRender
         }
         if(newDirection == Direction.ToRight)
         {
-            fv.Height = maxHeight+2;
+            fv.Height = maxHeight + 2;
         }
 
         view.Add(fv);

@@ -58,7 +58,7 @@ namespace MV.Loader
         
         public Assembly LoadFromFile(string path)
         {
-            System.Reflection.Assembly.LoadFile(@"C:\Users\Gal\AppData\Local\Temp\3cacf86b-8269-41de-b9cf-0774c1bcf082-verse.dll");
+            System.Reflection.Assembly.LoadFile(path);
 
             var assembly = _pluginAssemblyCache.LoadFromAssemblyPath(path);
 
