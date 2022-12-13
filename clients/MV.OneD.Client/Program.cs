@@ -14,10 +14,10 @@ Frame AddButtons(Frame hFrame)
 
 var frame = new HFrame();
 frame.Add(AddButtons(new VFrame()));
-frame.Add(AddButtons(new VFrame()));
-frame.Add(AddButtons(new HFrame()));
-frame.Add(AddButtons(new HFrame()));
-//AddButtons(frame);
+// frame.Add(AddButtons(new VFrame()));
+// frame.Add(AddButtons(new HFrame()));
+// frame.Add(AddButtons(new HFrame()));
+AddButtons(frame);
 var tr = new TerminalRender();
 tr.Show(frame);
 

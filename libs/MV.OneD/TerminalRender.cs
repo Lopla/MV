@@ -47,10 +47,10 @@ public class TerminalRender
                 BorderStyle = BorderStyle.Rounded
             }
         };
-
+         
         w.Enter += a => { _top.BringSubviewToFront(w); };
 
-        RenderGuiElement(w, element, (0, 0), Direction.TopBottom);
+        RenderGuiElement(w, element, (0, 0), Direction.TopBottom,0);
 
         _top.Add(w);
     }
@@ -63,8 +63,10 @@ public class TerminalRender
     {
         defaultSize = defaultSize ?? (10, 1);
 
-        var w = direction == Direction.TopBottom ? Dim.Fill() : defaultSize.Value.w;
-        var h = direction == Direction.ToRight ? Dim.Fill() : defaultSize.Value.h;
+        var w = //direction == Direction.TopBottom ? Dim.Fill() :
+                defaultSize.Value.w;
+        var h = //direction == Direction.ToRight ? Dim.Fill() :
+                defaultSize.Value.h;
 
         viewElement.Y = offsets.offsetY;
         viewElement.X = offsets.offsetX;
@@ -86,19 +88,20 @@ public class TerminalRender
         View view,
         IElement element,
         (int offsetX, int offsetY) offsets,
-        Direction direction)
+        Direction direction,
+        int level)
     {
         var initOffset = offsets;
         switch (element)
         {
             case VFrame frame:
             {
-                offsets = ShowFrame(view, offsets, frame, direction, Direction.TopBottom);
+                offsets = ShowFrame(view, offsets, frame, direction, Direction.TopBottom, level++);
                 break;
             }
             case HFrame frame:
             {
-                offsets = ShowFrame(view, offsets, frame, direction, Direction.ToRight);
+                offsets = ShowFrame(view, offsets, frame, direction, Direction.ToRight, level++);
                 break;
             }
             case Label lb:
@@ -115,7 +118,7 @@ public class TerminalRender
                 throw new NotImplementedException($"Not supported gui element: {element.GetType()}");
         }
 
-        Debug.WriteLine($"Adding element at {initOffset} resulting with {offsets}");
+        Debug.WriteLine($"{new string('-', level) }Adding element at {initOffset} resulting with {offsets}");
         return offsets;
     }
 
@@ -124,23 +127,24 @@ public class TerminalRender
         (int offsetX, int offsetY) offsets,
         Frame frame,
         Direction parentDirection,
-        Direction frameDirection)
+        Direction frameDirection,
+        int level)
     {
         var fv = new FrameView();
-        Debug.WriteLine($"F: {offsets}");
-        var o = CalculateSize(fv, offsets, parentDirection, (10, 2));
+        Debug.WriteLine($"{new string('-', level) }F: {offsets}");
+        var o = CalculateSize(fv, offsets, parentDirection, (5, 2));
         
-        var startOffset = RenderElements(offsets, frame, frameDirection, fv);
+        var startOffset = RenderElements(offsets, frame, frameDirection, fv, level);
 
-        o.offsetY = startOffset.offsetY + offsets.offsetY +2;
-        o.offsetX = startOffset.offsetX + offsets.offsetX +2;
+        o.offsetY = startOffset.offsetY + offsets.offsetY + 2;
+        o.offsetX = startOffset.offsetX + offsets.offsetX + 2;
 
         fv.Height = parentDirection == Direction.TopBottom ? Dim.Fill() : o.offsetY;
         fv.Width = parentDirection == Direction.ToRight ? Dim.Fill() : o.offsetX;
 
         view.Add(fv);
 
-        Debug.WriteLine($"F: {view.ToString()} {o}");
+        Debug.WriteLine($"{new string('-', level) }F: {view.ToString()} {o}");
 
         return o;
     }
@@ -149,16 +153,17 @@ public class TerminalRender
         (int offsetX, int offsetY) offsets, 
         Frame frame,
         Direction frameDirection, 
-        FrameView fv)
+        FrameView fv,
+        int level)
     {
         var so = (0,0);
 
-        Debug.WriteLine($"Starting rendering frame at: {so}");
+        Debug.WriteLine($"{new string('-', level) }Starting rendering frame at: {so}");
         int maxHeight = 1, maxWidth = 1;
         foreach (var item in frame.Elements)
         {
-            var newSize = RenderGuiElement(fv, item.Value, so, frameDirection);
-            Debug.WriteLine($" * added {item.Value} @{so} new size: {newSize}");
+            var newSize = RenderGuiElement(fv, item.Value, so, frameDirection, level+1);
+            Debug.WriteLine($"{new string(' ', level) } * added {item.Value} @{so} new size: {newSize}");
 
             maxHeight = maxHeight < newSize.offsetY ? newSize.offsetY : maxHeight;
             maxWidth = maxWidth < newSize.offsetX ? newSize.offsetX : maxWidth;
@@ -175,7 +180,7 @@ public class TerminalRender
         }
 
         var r = (maxWidth, maxHeight);
-        Debug.WriteLine($" * Frame size {r}");
+        Debug.WriteLine($"{new string('-', level) } * Frame size {r}");
         return r;
     }
 
