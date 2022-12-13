@@ -2,6 +2,7 @@
 using MV.Forms;
 using MV.Interfaces;
 using Terminal.Gui;
+using static MV.OneD.TerminalRender;
 using Button = MV.Forms.Button;
 using Label = MV.Forms.Label;
 
@@ -49,7 +50,7 @@ public class TerminalRender
 
         w.Enter += a => { _top.BringSubviewToFront(w); };
 
-        RenderFrame(w, element, (0, 0), Direction.TopBottom);
+        RenderGuiElement(w, element, (0, 0), Direction.TopBottom);
 
         _top.Add(w);
     }
@@ -81,12 +82,13 @@ public class TerminalRender
         return offsets;
     }
 
-    public (int offsetX, int offsetY) RenderFrame(
+    public (int offsetX, int offsetY) RenderGuiElement(
         View view,
         IElement element,
         (int offsetX, int offsetY) offsets,
         Direction direction)
     {
+        var initOffset = offsets;
         switch (element)
         {
             case VFrame frame:
@@ -113,6 +115,7 @@ public class TerminalRender
                 throw new NotImplementedException($"Not supported gui element: {element.GetType()}");
         }
 
+        Debug.WriteLine($"Adding element at {initOffset} resulting with {offsets}");
         return offsets;
     }
 
@@ -124,51 +127,55 @@ public class TerminalRender
         Direction frameDirection)
     {
         var fv = new FrameView();
+        Debug.WriteLine($"F: {offsets}");
         var o = CalculateSize(fv, offsets, parentDirection, (10, 2));
-
-        var startOffset = offsets;
         
-        startOffset = 
-            RenderElements(offsets, frame, frameDirection, startOffset, fv);
+        var startOffset = RenderElements(offsets, frame, frameDirection, fv);
 
         o.offsetY = startOffset.offsetY + offsets.offsetY +2;
         o.offsetX = startOffset.offsetX + offsets.offsetX +2;
 
-        fv.Height = o.offsetY;
+        fv.Height = parentDirection == Direction.TopBottom ? Dim.Fill() : o.offsetY;
+        fv.Width = parentDirection == Direction.ToRight ? Dim.Fill() : o.offsetX;
 
         view.Add(fv);
 
-        Debug.WriteLine($"{view.ToString()} {o}");
+        Debug.WriteLine($"F: {view.ToString()} {o}");
 
         return o;
     }
 
-    private (int offsetX, int offsetY) RenderElements((int offsetX, int offsetY) offsets, Frame frame,
-        Direction frameDirection, (int offsetX, int offsetY) startOffset, FrameView fv)
+    private (int offsetX, int offsetY) RenderElements(
+        (int offsetX, int offsetY) offsets, 
+        Frame frame,
+        Direction frameDirection, 
+        FrameView fv)
     {
+        var so = (0,0);
+
+        Debug.WriteLine($"Starting rendering frame at: {so}");
         int maxHeight = 1, maxWidth = 1;
-        var so = startOffset;
         foreach (var item in frame.Elements)
         {
-            var newSize = RenderFrame(fv, item.Value, so, frameDirection);
-            Debug.WriteLine($"Added {item.Value} {startOffset}");
+            var newSize = RenderGuiElement(fv, item.Value, so, frameDirection);
+            Debug.WriteLine($" * added {item.Value} @{so} new size: {newSize}");
 
             maxHeight = maxHeight < newSize.offsetY ? newSize.offsetY : maxHeight;
             maxWidth = maxWidth < newSize.offsetX ? newSize.offsetX : maxWidth;
 
             if (frameDirection == Direction.TopBottom)
             {
-                so = (offsets.offsetX, newSize.offsetY);
+                so = (0, newSize.offsetY);
             }
             else if (frameDirection == Direction.ToRight)
             {
-                so = (newSize.offsetX, offsets.offsetY);
+                so = (newSize.offsetX, 0);
             }
 
         }
 
         var r = (maxWidth, maxHeight);
-        Debug.WriteLine($"frame size {r}");
+        Debug.WriteLine($" * Frame size {r}");
         return r;
     }
 

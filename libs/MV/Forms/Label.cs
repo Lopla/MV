@@ -10,7 +10,7 @@ namespace MV.Forms
             this.Text = text ?? new I18NString();
         }
         
-        public I18NString Text{get;set;} = new I18NString();
+        public I18NString Text{get;set;}
 
     }
 }
